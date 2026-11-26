@@ -104,6 +104,7 @@ section{padding:48px 0}
 .inst-c ol{margin:0;padding-left:1.2em;font-size:.93rem;opacity:.95}
 .inst-c.meu{border-color:#fff;background:rgba(255,255,255,.2)}
 .inst-c.meu h3::after{content:" · o teu aparelho";font-size:.8rem;font-weight:600;opacity:.85}
+.contador{margin:18px 0 0;font-weight:700;color:var(--petroleo)}
 .aviso{font-size:.85rem;color:var(--suave);text-align:center;max-width:44em;margin:0 auto}
 footer{padding:28px 0 36px;text-align:center;color:var(--suave);font-size:.9rem}
 :focus-visible{outline:3px solid var(--coral);outline-offset:3px}
@@ -123,6 +124,7 @@ footer{padding:28px 0 36px;text-align:center;color:var(--suave);font-size:.9rem}
         <span class="etiqueta">Pensada para crianças com autismo</span>
         <h1>Um dia mais calmo, previsível e divertido.</h1>
         <p class="lead">A EduKids junta rotina visual, jogos, comunicação por imagens e uma área só para os pais — tudo num sítio simples, sem surpresas e sem pressa.</p>
+        <p class="contador" id="contador" hidden></p>
         <div class="acoes">
           <a class="btn" href="#instalar" data-instalar>Instalar a app</a>
           <a class="btn sec" href="#funcionalidades">Ver o que faz</a>
@@ -221,6 +223,23 @@ footer{padding:28px 0 36px;text-align:center;color:var(--suave);font-size:.9rem}
 <footer>
   <div class="wrap"><span class="logo" aria-hidden="true" style="margin:0 auto 8px;width:40px;height:40px"></span>EduKids · Aprende e Brinca · © 2026<br><a href="privacidade.html">Política de Privacidade</a> · <a href="termos.html">Termos de Uso</a></div>
 </footer>
+<script>
+// Contador público: lido do Firestore (documento publico/contador, ligado ou desligado no admin.html).
+// Se estiver desligado, abaixo do mínimo ou a falhar, não aparece nada.
+(function(){
+  var url = "https://firestore.googleapis.com/v1/projects/o-mundo-do-eduardo/databases/(default)/documents/publico/contador?key=AIzaSyCXYOKlqLAPN0GlWoV9KvNRFOuhQJ_XtFE";
+  fetch(url).then(function(r){ return r.ok ? r.json() : null; }).then(function(j){
+    if(!j || !j.fields) return;
+    var f = j.fields, ativo = f.ativo && f.ativo.booleanValue === true;
+    var total = parseInt(f.total && (f.total.integerValue || f.total.doubleValue), 10) || 0;
+    var min = parseInt(f.minimo && (f.minimo.integerValue || f.minimo.doubleValue), 10) || 25;
+    if(!ativo || total < min) return;
+    var el = document.getElementById("contador");
+    el.textContent = "👨‍👩‍👧 Já são " + total + (total === 1 ? " família" : " famílias") + " a usar a EduKids";
+    el.hidden = false;
+  }).catch(function(){});
+})();
+</script>
 <script>
 (function(){
   // Endereço da app EduKids (o sítio onde ela está publicada). Ex.: "https://o-teu-sitio.pt/edukids/"

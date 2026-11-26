@@ -52,6 +52,14 @@ code{background:var(--linha);padding:2px 6px;border-radius:6px;word-break:break-
     </div>
     <div id="dados" hidden>
       <div class="kpis" id="kpis"></div>
+      <h2>Contador público na landing</h2>
+      <div class="card" id="cartao-contador">
+        <label style="display:flex;gap:10px;align-items:center;cursor:pointer"><input type="checkbox" id="ct-ativo" style="width:22px;height:22px"> <b>Mostrar o contador na landing</b></label>
+        <p class="suave" style="margin:.6em 0">Número a mostrar: <b id="ct-total">0</b> (sem contar a tua conta). Atualiza-se sempre que abres este painel.</p>
+        <label class="suave">Só aparece a partir de <input id="ct-min" type="number" min="1" max="100000" value="25" style="width:90px"> utilizadores</label>
+        <div style="margin-top:12px"><button id="ct-guardar">Guardar</button></div>
+        <p class="suave" id="ct-estado" role="status"></p>
+      </div>
       <h2>Versões da app em uso</h2><div class="card suave" id="versoes"></div>
       <h2>Utilizadores</h2>
       <div class="topo" style="margin-bottom:8px"><input id="filtro" type="search" placeholder="Procurar por email" style="flex:1;min-width:180px"><button class="s" id="csv">⬇️ Exportar CSV</button></div>
@@ -66,7 +74,7 @@ code{background:var(--linha);padding:2px 6px;border-radius:6px;word-break:break-
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
-import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+import { getFirestore, collection, getDocs, doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
 
 const app = initializeApp({
   apiKey: "AIzaSyCXYOKlqLAPN0GlWoV9KvNRFOuhQJ_XtFE",
@@ -99,10 +107,10 @@ onAuthStateChanged(auth, async user => {
   try{
     const snap = await getDocs(collection(db, 'metricas'));
     linhas = snap.docs.map(d => { const v = d.data(); return {
-      email: v.email || '', criadoEm: v.criadoEm || 0,
+      uid: d.id, email: v.email || '', criadoEm: v.criadoEm || 0,
       ultimaAtividade: v.ultimaAtividade && v.ultimaAtividade.toMillis ? v.ultimaAtividade.toMillis() : 0,
       versao: v.versao || '', instalada: !!v.instalada }; });
-    mostrar();
+    mostrar(); contador(user);
   }catch(err){
     $('uid').textContent = user.uid; $('sem-acesso').hidden = false;
   }
@@ -119,6 +127,33 @@ function mostrar(){
   $('versoes').innerHTML = Object.keys(v).sort().reverse().map(k => `<b>${esc(k)}</b>: ${v[k]}`).join(' &nbsp;·&nbsp; ') || '—';
   tabela(); $('dados').hidden = false;
 }
+
+let ctRef = null, ctUser = null;
+async function contador(user){
+  ctUser = user; ctRef = doc(db, 'publico', 'contador');
+  const total = linhas.filter(l => l.uid !== user.uid).length;
+  $('ct-total').textContent = total;
+  try{
+    const s = await getDoc(ctRef), d = s.exists() ? s.data() : {};
+    $('ct-ativo').checked = !!d.ativo; if(d.minimo) $('ct-min').value = d.minimo;
+    if(d.ativo && d.total !== total){ await setDoc(ctRef, { total, atualizadoEm: serverTimestamp() }, { merge: true }); }
+    estadoContador(!!d.ativo, total, d.minimo || 25);
+  }catch(e){ $('ct-estado').textContent = 'Não foi possível ler o contador. Faltam as regras de "publico" no Firestore?'; }
+}
+function estadoContador(ativo, total, min){
+  $('ct-estado').textContent = !ativo ? 'Desligado: a landing não mostra nenhum número.'
+    : total >= min ? `Ligado: a landing mostra "${total} famílias".` : `Ligado, mas ainda escondido: ${total} é menos do que o mínimo (${min}).`;
+}
+$('ct-guardar').addEventListener('click', async () => {
+  if(!ctRef) return;
+  const total = linhas.filter(l => l.uid !== ctUser.uid).length;
+  const min = Math.max(1, parseInt($('ct-min').value, 10) || 25), ativo = $('ct-ativo').checked;
+  $('ct-estado').textContent = 'A guardar...';
+  try{
+    await setDoc(ctRef, { ativo, total, minimo: min, atualizadoEm: serverTimestamp() });
+    estadoContador(ativo, total, min);
+  }catch(e){ $('ct-estado').textContent = 'Não foi possível guardar. Verifica as regras do Firestore.'; }
+});
 
 function tabela(){
   const f = $('filtro').value.trim().toLowerCase();
