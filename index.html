@@ -2517,7 +2517,6 @@
       <div class="header-extras" id="header-extras">
       <button class="btn-texto-maior" id="btn-texto-maior" onclick="alternarTamanhoTexto()" aria-label="Aumentar ou diminuir o tamanho do texto" title="Tamanho do texto">A<span style="font-size:0.7em;">+</span></button>
       <div class="btn-engrenagem" id="btn-area-pais" style="opacity:.75;" title="Área dos pais" aria-label="Área dos pais" role="button" tabindex="0" onclick="document.getElementById('overlay-confirmar-adulto').classList.add('mostrar')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();document.getElementById('overlay-confirmar-adulto').classList.add('mostrar');}">👨‍👩‍👧</div>
-      <div class="btn-engrenagem" id="btn-engrenagem-videos">⚙️</div>
       </div>
       <button class="btn-mais-header" id="btn-mais-header" onclick="alternarExtrasHeader()" aria-label="Mais opções" aria-expanded="false">⋯</button>
     </div>
@@ -3313,11 +3312,10 @@
       <button class="btn-secundario" id="btn-terminar-sessao" style="margin-top:6px;color:var(--erro,#b3452c);border-color:var(--erro,#b3452c);">🚪 Terminar sessão</button>
       <p id="msg-terminar-sessao" style="text-align:center;font-size:12.5px;color:var(--texto-suave);margin-top:8px;"></p>
       </div>
-    </section>
 
-    <!-- ===================== GESTÃO DE VÍDEOS + IA (área escondida do administrador, acesso pela engrenagem) ===================== -->
-    <section class="ecra" id="ecra-gestao-videos">
-      <button class="voltar" onclick="irPara('inicio')">← Voltar</button>
+      <!-- ===================== FERRAMENTAS (antes no ecrã de administração) ===================== -->
+      <div class="painel-aba" data-aba="ferramentas">
+
       <div class="titulo-secao">Gerir Vídeos</div>
       <div class="subtitulo-secao">Adiciona links do YouTube, Vimeo ou ficheiros de vídeo</div>
       <div id="lista-gestao-videos"></div>
@@ -3428,6 +3426,108 @@
       <div id="revisao-historia"></div>
       <button class="btn-primario" id="btn-adicionar-historia" style="margin-top:10px;display:none;">✓ Adicionar esta história às Atividades</button>
 
+      <!-- ===================== FICHAS E DESENHOS PARA IMPRIMIR (IA → PDF) ===================== -->
+      <div class="separador-secao"></div>
+      <div class="titulo-secao" style="font-size:18px;">🖨️ Fichas e desenhos para imprimir</div>
+      <div class="subtitulo-secao">A IA cria uma ficha de trabalho ou desenhos para colorir, em PDF para imprimir. Usa o mesmo fornecedor e chave de IA definidos acima. Revê sempre antes de imprimir: a IA pode errar.</div>
+
+      <div class="linha-definicao" style="align-items:flex-start;">
+        <div class="txt-def" style="width:100%;">
+          <div class="t">O que queres criar</div>
+          <select id="fi-tipo" style="margin-top:8px;width:100%;padding:10px;border-radius:12px;border:2px solid var(--salva-clara);background:var(--areia-clara);font-family:inherit;font-size:13.5px;color:var(--texto);">
+            <option value="ficha" selected>📝 Ficha de trabalho</option>
+            <option value="desenho">🎨 Desenhos para colorir</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="linha-definicao" style="align-items:flex-start;">
+        <div class="txt-def" style="width:100%;">
+          <div class="t" id="fi-tema-titulo">Tema (opcional)</div>
+          <div class="d" id="fi-tema-desc">Um interesse para dar vida aos exercícios. Ex: carros, dinossauros, o mar.</div>
+          <input type="text" id="fi-tema" maxlength="80" placeholder="Ex: carros" style="margin-top:8px;width:100%;padding:10px;border-radius:12px;border:2px solid var(--salva-clara);background:var(--areia-clara);font-family:inherit;font-size:13.5px;color:var(--texto);">
+        </div>
+      </div>
+
+      <div class="linha-definicao" style="align-items:flex-start;">
+        <div class="txt-def" style="width:100%;">
+          <div class="t">Idade</div>
+          <select id="fi-idade" style="margin-top:8px;width:100%;padding:10px;border-radius:12px;border:2px solid var(--salva-clara);background:var(--areia-clara);font-family:inherit;font-size:13.5px;color:var(--texto);">
+            <option value="3-4">3 a 4 anos</option>
+            <option value="5-6" selected>5 a 6 anos</option>
+            <option value="7-8">7 a 8 anos</option>
+            <option value="9-10">9 a 10 anos</option>
+            <option value="11-12">11 a 12 anos</option>
+            <option value="13-15">13 a 15 anos</option>
+            <option value="16+">16 ou mais anos</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="linha-definicao" style="align-items:flex-start;">
+        <div class="txt-def" style="width:100%;">
+          <label style="display:flex;gap:10px;align-items:flex-start;font-weight:700;font-size:13.5px;cursor:pointer;">
+            <input type="checkbox" id="fi-usar-perfil" checked style="margin-top:3px;width:18px;height:18px;flex:none;">
+            <span>Adaptar ao perfil da criança</span>
+          </label>
+          <div class="d" id="fi-perfil-desc" style="margin-top:6px;">Usa a idade, o ano escolar, os interesses, as dificuldades e o perfil sensorial do questionário para ajustar a dificuldade e o tema. Estes dados são enviados à IA (Gemini, da Google), como nos outros geradores. O nome não vai.</div>
+        </div>
+      </div>
+
+      <div id="bloco-fi-ficha">
+        <div class="linha-definicao" style="align-items:flex-start;">
+          <div class="txt-def" style="width:100%;">
+            <div class="t">Matéria</div>
+            <select id="fi-materia" style="margin-top:8px;width:100%;padding:10px;border-radius:12px;border:2px solid var(--salva-clara);background:var(--areia-clara);font-family:inherit;font-size:13.5px;color:var(--texto);">
+              <option value="letras" selected>Letras e vogais</option>
+              <option value="numeros">Números até 20</option>
+              <option value="matematica">Somas e subtrações simples</option>
+              <option value="formas_cores">Formas e cores</option>
+              <option value="emocoes">Emoções</option>
+              <option value="rotina">Rotinas do dia a dia</option>
+              <option value="animais">Animais</option>
+            </select>
+          </div>
+        </div>
+        <div class="linha-definicao" style="align-items:flex-start;">
+          <div class="txt-def" style="width:100%;">
+            <div class="t">Quantos exercícios</div>
+            <input type="number" id="fi-quantidade" value="5" min="3" max="8" style="margin-top:8px;width:80px;padding:8px;border-radius:10px;border:2px solid var(--salva-clara);background:var(--areia-clara);font-family:inherit;font-size:13.5px;color:var(--texto);">
+          </div>
+        </div>
+      </div>
+
+      <div id="bloco-fi-desenho" style="display:none;">
+        <div class="linha-definicao" style="align-items:flex-start;">
+          <div class="txt-def" style="width:100%;">
+            <div class="t">Estilo do desenho</div>
+            <div class="d">Os desenhos são montados com peças da app (cão, gato, coelho, carro, casa, avião, barco, peixe, tartaruga, borboleta). Por números ou letras, cada área traz uma marca e a folha traz a legenda das cores.</div>
+            <select id="fi-modo-desenho" style="margin-top:8px;width:100%;padding:10px;border-radius:12px;border:2px solid var(--salva-clara);background:var(--areia-clara);font-family:inherit;font-size:13.5px;color:var(--texto);">
+              <option value="numeros" selected>Pintar por números (com legenda)</option>
+              <option value="letras">Pintar pelas letras (com legenda)</option>
+              <option value="pontos">Ligar os pontos</option>
+              <option value="livre">Colorir livremente</option>
+            </select>
+          </div>
+        </div>
+        <div class="linha-definicao" style="align-items:flex-start;">
+          <div class="txt-def" style="width:100%;">
+            <div class="t">Quantos desenhos</div>
+            <div class="d">Cada desenho ocupa uma folha A4. Mais desenhos demoram mais a gerar.</div>
+            <select id="fi-qtd-desenhos" style="margin-top:8px;width:100%;padding:10px;border-radius:12px;border:2px solid var(--salva-clara);background:var(--areia-clara);font-family:inherit;font-size:13.5px;color:var(--texto);">
+              <option value="1" selected>1 desenho</option>
+              <option value="2">2 desenhos</option>
+              <option value="3">3 desenhos</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn-primario" id="btn-gerar-fi" style="margin-top:10px;">✨ Criar ficha</button>
+      <p id="msg-fi" style="text-align:center;font-size:12.5px;color:var(--texto-suave);margin-top:10px;"></p>
+      <div id="fi-previa"></div>
+      <button class="btn-primario" id="btn-baixar-fi" style="margin-top:10px;display:none;">📄 Descarregar PDF para imprimir</button>
+
       <!-- ===================== PLANO (frase única → CAA + rotina + história, com IA) ===================== -->
       <div class="separador-secao"></div>
       <div class="titulo-secao" style="font-size:18px;">🧭 Criar um Plano</div>
@@ -3531,17 +3631,13 @@
         <input type="checkbox" id="reset-chave-gemini" class="checkbox-reset">
       </label>
 
-      <label class="linha-definicao" style="cursor:pointer;">
-        <div class="txt-def">
-          <div class="t">🔒 PIN da área dos pais</div>
-          <div class="d">Se a mãe esquecer o PIN, marca isto para ela poder definir um novo da próxima vez que entrar — não mexe no teu PIN de administração</div>
-        </div>
-        <input type="checkbox" id="reset-pin-config" class="checkbox-reset">
-      </label>
 
       <button class="btn-primario" id="btn-fazer-reset" style="margin-top:14px;background:var(--coral-suave);">🔄 Fazer reset</button>
       <p id="msg-reset" style="text-align:center;font-size:12.5px;color:var(--texto-suave);margin-top:10px;"></p>
+          </div>
     </section>
+
+
 
   </main>
 
@@ -3731,9 +3827,8 @@
 <div class="overlay-pin" id="overlay-ajuda-pin">
   <div class="caixa-pin">
     <h3>🔑 Recuperar acesso</h3>
-    <p style="text-align:left;">Se esqueceste o PIN, podes limpá-lo através da consola do browser (Chrome: menu ⋮ → Mais ferramentas → Ferramentas de programador → separador "Console") e escrever exatamente um destes comandos, consoante a área:</p>
+    <p style="text-align:left;">Se esqueceste o PIN, podes limpá-lo através da consola do browser (Chrome: menu ⋮ → Mais ferramentas → Ferramentas de programador → separador "Console") e escrever exatamente este comando:</p>
     <p style="text-align:left;font-family:monospace;font-size:12px;background:var(--areia-clara);padding:8px;border-radius:8px;">Área dos pais:<br>localStorage.removeItem('mundoDoEduardo_pinHashConfig_v1')</p>
-    <p style="text-align:left;font-family:monospace;font-size:12px;background:var(--areia-clara);padding:8px;border-radius:8px;">Área de administração:<br>localStorage.removeItem('mundoDoEduardo_pinHashAdmin_v1')</p>
     <p style="text-align:left;">Depois de carregar em Enter na consola, volta a tentar aceder — a app vai pedir para criares um PIN novo, como da primeira vez.</p>
     <div class="botoes-pin">
       <button class="btn-confirmar-pin" onclick="document.getElementById('overlay-ajuda-pin').classList.remove('mostrar')">Percebi</button>
@@ -4312,7 +4407,7 @@
       EmailAuthProvider, reauthenticateWithCredential, deleteUser
     } = await import("https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js");
     const {
-      getFirestore, doc, setDoc, getDoc, deleteDoc, updateDoc, collection, getDocs, writeBatch
+      getFirestore, doc, setDoc, getDoc, deleteDoc, updateDoc, collection, getDocs, writeBatch, serverTimestamp
     } = await import("https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js");
 
     // ⚠️ SUBSTITUI pelos valores do TEU projeto Firebase (ver instruções acima).
@@ -4333,6 +4428,25 @@
       const firebaseApp = initializeApp(firebaseConfig);
       const auth = getAuth(firebaseApp);
       const db = getFirestore(firebaseApp);
+
+      // Métricas mínimas da conta para o painel de administração (admin.html): só email, datas, versão e se está instalada.
+      // Nunca inclui dados da criança. No máximo uma escrita por dia e por aparelho.
+      const registarMetricas = async (user) => {
+        try{
+          const dia = new Date().toISOString().slice(0, 10);
+          const chave = 'edukids_metricas_dia_' + user.uid;
+          if(localStorage.getItem(chave) === dia) return;
+          const criado = user.metadata && user.metadata.creationTime ? Date.parse(user.metadata.creationTime) : null;
+          await setDoc(doc(db, "metricas", user.uid), {
+            email: user.email || '',
+            criadoEm: criado || null,
+            ultimaAtividade: serverTimestamp(),
+            versao: String(window.APP_VERSION || ''),
+            instalada: !!(window.matchMedia && window.matchMedia('(display-mode: standalone)').matches),
+          }, { merge: true });
+          localStorage.setItem(chave, dia);
+        }catch(e){}
+      };
 
       // ===== Código de convite forte =====
       // 16 caracteres (maiúsculas, minúsculas, números e símbolos) ≈ 97 bits de entropia,
@@ -4408,6 +4522,7 @@
           colabSnap.forEach(d => batch.delete(d.ref));
           batch.delete(doc(db, "perfis", uid, "partilhado", "dados"));
           batch.delete(doc(db, "perfis", uid));
+          batch.delete(doc(db, "metricas", uid));
           await batch.commit();
           await deleteUser(auth.currentUser);
         },
@@ -4543,6 +4658,7 @@
       onAuthStateChanged(auth, (user) => {
         if(user){
           window.utilizadorAtual = user;
+          registarMetricas(user);
           // Guarda um sinal local (não credenciais) de que este dispositivo já teve
           // sessão válida, para permitir continuar a usar a app offline mais tarde
           // se o Firebase não conseguir responder no arranque (ver timeout acima).
@@ -4585,7 +4701,7 @@
 </script>
 
 <script>
-window.APP_VERSION = '1.57.55';
+window.APP_VERSION = '1.57.61';
 
 /* ======================= DADOS ======================= */
 
@@ -8261,6 +8377,7 @@ const ABAS_CONFIG = [
   {id:'terapeuta', nome:'🩺 Terapeuta'},
   {id:'recompensas', nome:'🎁 Recompensas'},
   {id:'dicas', nome:'💡 Dicas'},
+  {id:'ferramentas', nome:'🛠️ Ferramentas'},
 ];
 let abaConfigAtiva = 'perfil';
 
@@ -8283,6 +8400,7 @@ function renderAbasConfig(){
 }
 
 function aplicarAbaConfigAtiva(){
+  if(abaConfigAtiva === 'ferramentas' && typeof renderGestaoVideos === 'function') renderGestaoVideos();
   document.querySelectorAll('#ecra-config .painel-aba').forEach(painel=>{
     painel.classList.toggle('ativo', painel.dataset.aba === abaConfigAtiva);
   });
@@ -14940,8 +15058,8 @@ function abrirConfig(){
 }
 
 function abrirGestaoVideos(){
-  pinDestinoPendente = 'gestaoVideos';
-  pedirPin();
+  abaConfigAtiva = 'ferramentas';
+  abrirConfig();
 }
 
 // v1.57.28: bloqueio progressivo após 5 tentativas erradas (por área) e confirmação dupla ao criar o PIN.
@@ -19299,6 +19417,1219 @@ function configurarBotoesHistoriaSocial(){
   if(btnAdicionar) btnAdicionar.addEventListener('click', adicionarHistoriaSocialAoBanco);
 }
 
+// ===================== FICHAS DE TRABALHO E DESENHOS PARA COLORIR (IA → PDF para imprimir) =====================
+// Mesmo princípio dos outros geradores desta área: a IA só recebe o que se escreve aqui (tema,
+// matéria, idade) — nunca o questionário nem o perfil da criança — e nada é impresso sem os pais
+// reverem primeiro. A ficha é montada em PDF com formas e linhas vetoriais (o PDF base não
+// suporta emojis); o desenho é pedido como SVG, limpo de tudo o que não seja traço, e convertido
+// em imagem antes de entrar no PDF.
+let fichaImprimirGerada = null; // { tipo:'ficha', titulo, exercicios } | { tipo:'desenho', titulo, desenhos:[svg] }
+
+const NOMES_MATERIA_FICHA = {
+  letras: 'Letras e vogais', numeros: 'Números', matematica: 'Somas e subtrações',
+  formas_cores: 'Formas e cores', emocoes: 'Emoções', rotina: 'Rotinas', animais: 'Animais',
+};
+const DESC_MATERIA_FICHA = {
+  letras: 'letras e vogais (reconhecer, traçar e escrever)',
+  numeros: 'números até 20 (contar, traçar e comparar)',
+  matematica: 'somas e subtrações muito simples, com apoio visual',
+  formas_cores: 'formas geométricas e cores',
+  emocoes: 'emoções (identificar o que sente cada pessoa numa situação simples)',
+  rotina: 'rotinas do dia a dia (ordem das ações)',
+  animais: 'animais, os sons que fazem e onde vivem',
+};
+
+// Dados do perfil da criança que ajudam a adaptar fichas e desenhos. Deliberadamente SEM o nome
+// nem a rotina: a IA não precisa deles para isto.
+function obterPerfilParaFichas(){
+  try{
+    const bruto = localStorage.getItem(CHAVE_QUESTIONARIO_EDUARDO);
+    if(!bruto) return null;
+    const d = JSON.parse(bruto);
+    if(!d || typeof d !== 'object') return null;
+    const partes = [];
+    if(d.idade) partes.push(`Idade: ${d.idade} anos.`);
+    if(d.anoEscolar) partes.push(`Ano escolar: ${d.anoEscolar}.`);
+    if(d.dificuldades) partes.push(`Dificuldades específicas: ${d.dificuldades}.`);
+    if(d.interesses) partes.push(`Interesses: ${d.interesses}.`);
+    if(d.sensorialEstruturado && typeof d.sensorialEstruturado === 'object'){
+      const frases = Object.keys(d.sensorialEstruturado).filter(k => d.sensorialEstruturado[k]).map(k => k.split('|')[2]).filter(Boolean);
+      if(frases.length) partes.push(`Perfil sensorial: ${frases.join('; ')}.`);
+    }
+    if(d.sensorial) partes.push(`Outras notas sensoriais: ${d.sensorial}.`);
+    const idade = parseInt(d.idade, 10);
+    return { idade: idade > 0 ? idade : null, interesses: d.interesses ? String(d.interesses) : '', texto: partes.join(' ') };
+  }catch(e){ return null; }
+}
+
+// "5-6" → "5 a 6 anos"; "16+" → "16 ou mais anos"; "12" (idade do perfil) → "12 anos".
+function textoIdadeFicha(v){
+  const t = String(v || '');
+  if(t === '16+') return '16 ou mais anos';
+  if(/^\d+-\d+$/.test(t)) return t.replace('-', ' a ') + ' anos';
+  const n = parseInt(t, 10);
+  return n > 0 ? n + ' anos' : '5 a 6 anos';
+}
+
+// O PDF base (Helvetica) só desenha Latin-1: tira emojis e símbolos, mantém acentos do português.
+function limparTextoPdf(texto){
+  return String(texto == null ? '' : texto)
+    .replace(/[\u2018\u2019]/g, "'").replace(/[\u201C\u201D]/g, '"')
+    .replace(/[\u2013\u2014]/g, '-').replace(/\u2026/g, '...')
+    .normalize('NFC')
+    .replace(/[^\u0020-\u007E\u00A1-\u00FF]/g, '')
+    .replace(/\s+/g, ' ').trim();
+}
+
+function construirPromptFicha(materiaChave, tema, idade, quantidade, perfil){
+  const interesses = perfil && perfil.interesses ? 'Se fizer sentido, usa os interesses do perfil nos exemplos.\n' : '';
+  return `És professor de educação especial em Portugal. Cria uma ficha de trabalho para imprimir, em português europeu (pt-PT), para uma criança ou jovem de ${textoIdadeFicha(idade)}.
+Matéria: ${DESC_MATERIA_FICHA[materiaChave]}.
+${tema ? `Tema/interesse a usar nos exemplos: ${tema}.\n` : interesses}${perfil && perfil.texto ? `Perfil da criança (usa-o para ajustar a dificuldade, a quantidade de itens e o tipo de exercício; nunca refiras o perfil nem diagnósticos no texto da ficha): ${perfil.texto}\n` : ''}Ajusta a dificuldade à idade e ao perfil, mantendo as instruções curtas e claras.
+Regras: frases curtas e diretas; um só pedido por exercício; linguagem positiva; nada assustador; SEM emojis nem símbolos especiais (só letras, números e pontuação normal). As respostas têm de estar corretas.
+Devolve APENAS um array JSON com exatamente ${quantidade} exercícios, sem texto antes ou depois. Cada exercício é UM destes formatos:
+{"tipo":"contar","enunciado":"Conta as estrelas e escreve o número.","forma":"estrela","quantidade":5,"resposta":"5"}  (forma: estrela, circulo, quadrado, triangulo ou coracao; quantidade de 1 a 10)
+{"tipo":"ligar","enunciado":"Liga cada animal ao som que faz.","pares":[{"esq":"Cão","dir":"Au au"},{"esq":"Gato","dir":"Miau"}]}  (3 a 5 pares, textos curtos)
+{"tipo":"circular","enunciado":"Circula a letra A.","opcoes":["A","B","A","C"],"resposta":"A"}  (3 a 8 opções curtas)
+{"tipo":"completar","enunciado":"Completa a palavra.","itens":["g_to","b_la"],"resposta":"gato, bola"}  (usa _ para a letra em falta; 2 a 5 itens)
+{"tipo":"tracar","enunciado":"Passa por cima das letras.","texto":"A a E e"}  (texto curto, até 12 caracteres)
+{"tipo":"escrever","enunciado":"Escreve o teu nome.","linhas":2}
+Escolhe os tipos que fazem sentido para a matéria e varia entre eles. O campo "resposta" só é preciso onde aparece nos exemplos.`;
+}
+
+// Confere contas simples ("2 + 2", "5 - 1", "3 x 2") para não imprimir resultados errados.
+function resultadoDaConta(texto){
+  const m = String(texto || '').match(/^\s*(\d+)\s*([+\-xX×*])\s*(\d+)\s*$/);
+  if(!m) return null;
+  const a = parseInt(m[1], 10), b = parseInt(m[3], 10);
+  return m[2] === '+' ? a + b : m[2] === '-' ? a - b : a * b;
+}
+
+function validarFichaGerada(lista){
+  const formas = ['estrela', 'circulo', 'quadrado', 'triangulo', 'coracao'];
+  const nomeForma = { estrela: 'as estrelas', circulo: 'os círculos', quadrado: 'os quadrados', triangulo: 'os triângulos', coracao: 'os corações' };
+  const txt = (v, max) => limparTextoPdf(v).slice(0, max || 120).trim();
+  const saida = [];
+  (Array.isArray(lista) ? lista : []).forEach(e => {
+    if(!e || typeof e !== 'object') return;
+    const enunciado = txt(e.enunciado, 140);
+    if(!enunciado) return;
+    const base = { tipo: e.tipo, enunciado, resposta: txt(e.resposta, 60) };
+    if(e.tipo === 'contar'){
+      const forma = formas.includes(e.forma) ? e.forma : 'estrela';
+      // o texto tem de falar do que está desenhado (a IA escrevia "consolas" e a folha trazia quadrados)
+      saida.push({ ...base, enunciado: `Conta ${nomeForma[forma]} e escreve o número.`, forma, quantidade: Math.min(10, Math.max(1, parseInt(e.quantidade, 10) || 5)) });
+    }else if(e.tipo === 'ligar'){
+      const vistosEsq = new Set(), vistosDir = new Set();
+      const pares = (Array.isArray(e.pares) ? e.pares : [])
+        .map(p => ({ esq: txt(p && p.esq, 24), dir: txt(p && p.dir, 24) }))
+        .filter(p => p.esq && p.dir)
+        .filter(p => { // contas com resultado errado saem
+          const r = resultadoDaConta(p.esq);
+          return r === null || String(r) === p.dir;
+        })
+        .filter(p => { // sem repetidos: duas contas com o mesmo resultado tornam a ligação ambígua
+          if(vistosEsq.has(p.esq) || vistosDir.has(p.dir)) return false;
+          vistosEsq.add(p.esq); vistosDir.add(p.dir); return true;
+        }).slice(0, 5);
+      if(pares.length >= 2) saida.push({ ...base, pares });
+    }else if(e.tipo === 'circular'){
+      const opcoes = (Array.isArray(e.opcoes) ? e.opcoes : []).map(o => txt(o, 14)).filter(Boolean).slice(0, 8);
+      let resposta = base.resposta;
+      const c = String(enunciado).match(/(\d+)\s*(mais|menos)\s*(\d+)/i);
+      if(c){ // "soma 2 mais 1": a resposta certa é calculada aqui e tem de estar nas opções
+        const certo = String(/mais/i.test(c[2]) ? parseInt(c[1], 10) + parseInt(c[3], 10) : parseInt(c[1], 10) - parseInt(c[3], 10));
+        if(!opcoes.includes(certo)) return;
+        resposta = certo;
+      }
+      if(opcoes.length >= 2) saida.push({ ...base, opcoes, resposta });
+    }else if(e.tipo === 'completar'){
+      const itens = (Array.isArray(e.itens) ? e.itens : []).map(i => txt(i, 24)).filter(Boolean).slice(0, 5);
+      if(itens.length >= 1) saida.push({ ...base, itens });
+    }else if(e.tipo === 'tracar'){
+      const texto = txt(e.texto, 12);
+      if(texto) saida.push({ ...base, texto });
+    }else if(e.tipo === 'escrever'){
+      saida.push({ ...base, linhas: Math.min(4, Math.max(1, parseInt(e.linhas, 10) || 2)) });
+    }
+  });
+  return saida;
+}
+
+const PALETA_NUMEROS = [
+  { n: 1, nome: 'castanho', cor: [139, 94, 60], texto: 255 },
+  { n: 2, nome: 'azul', cor: [59, 111, 224], texto: 255 },
+  { n: 3, nome: 'amarelo', cor: [255, 210, 31], texto: 0 },
+  { n: 4, nome: 'vermelho', cor: [208, 27, 27], texto: 255 },
+  { n: 5, nome: 'verde', cor: [92, 184, 92], texto: 0 },
+  { n: 6, nome: 'rosa', cor: [244, 116, 139], texto: 0 },
+  { n: 7, nome: 'laranja', cor: [245, 140, 30], texto: 0 },
+  { n: 8, nome: 'cinzento', cor: [150, 150, 155], texto: 0 },
+];
+// Nas fichas "pelas letras" cada cor é indicada por uma letra (vogais primeiro).
+const LETRAS_COR = ['A', 'E', 'I', 'O', 'U', 'B', 'C', 'D'];
+function rotuloCor(modo, n, letras){ return modo === 'letras' ? ((letras && letras[n]) || LETRAS_COR[n - 1]) : String(n); }
+
+function construirPromptDesenho(tema, idade, numero, total, modo, perfil){
+  const porNumeros = modo !== 'livre';
+  const dn = (n) => porNumeros ? ` data-n="${n}"` : '';
+  return `Cria um desenho para ${porNumeros ? 'pintar por números' : 'colorir'}, em SVG, para uma criança ou jovem de ${textoIdadeFicha(idade)}, sobre: ${tema}.${total > 1 ? ` Este é o desenho ${numero} de ${total}: faz uma cena ou pose diferente das outras.` : ''}
+${perfil && perfil.texto ? `Perfil da criança (usa-o para escolher a complexidade: menos áreas e formas maiores se houver dificuldades de atenção ou de motricidade fina; evita o que possa incomodar o perfil sensorial; nunca refiras o perfil): ${perfil.texto}\n` : ''}Devolve APENAS código SVG (começa em <svg e acaba em </svg>), sem explicações nem blocos de código.
+Regras:
+- viewBox="0 0 800 800"; sem fundo, sem moldura, sem transformações (transform), sem texto, sem imagens, sem scripts.
+- Desenha de trás para a frente: o que está à frente vem depois e tapa o que está atrás. TODAS as formas fechadas levam fill="#fff" stroke="#000" stroke-width="6" para as linhas de baixo não aparecerem. Linhas soltas (sorriso, pormenores) levam fill="none".
+- Usa só <path> (fechado com Z), <circle>, <ellipse>, <rect>, <polygon>, <line> e <polyline>.
+- UM objeto principal grande e centrado, formas simples e arredondadas, partes bem encaixadas e proporcionadas (ex.: num carro, as rodas ficam por baixo da carroçaria e encostam ao chão), nada assustador. Sem pormenores pequenos: cada área tem de ser grande.
+${porNumeros
+  ? `- Cada forma fechada a pintar leva o atributo data-n com o número da cor (1 castanho, 2 azul, 3 amarelo, 4 vermelho, 5 verde, 6 rosa, 7 laranja, 8 cinzento), escolhido com lógica (sol = 3, folhas e erva = 5, céu = 2). Usa pelo menos 4 cores diferentes e no máximo cerca de 14 áreas. Os números são acrescentados depois pela aplicação: NÃO escrevas números.`
+  : `- No máximo cerca de 15 áreas para pintar.`}
+Exemplo do formato (uma casa):
+<svg viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
+<circle cx="640" cy="140" r="70" fill="#fff" stroke="#000" stroke-width="6"${dn(3)}/>
+<rect x="200" y="380" width="400" height="300" fill="#fff" stroke="#000" stroke-width="6"${dn(6)}/>
+<polygon points="170,390 400,200 630,390" fill="#fff" stroke="#000" stroke-width="6"${dn(4)}/>
+<rect x="350" y="500" width="100" height="180" fill="#fff" stroke="#000" stroke-width="6"${dn(1)}/>
+</svg>`;
+}
+
+// O SVG vem de uma IA, por isso é tratado como não confiável: só se aceitam formas de traço, sem
+// texto, scripts, imagens, ligações externas nem estilos. Para além disso, só é mostrado/rasterizado
+// dentro de um <img> (onde o browser nunca executa scripts). No modo "por números" mantém-se
+// apenas o atributo data-n (1 a 6) nas formas fechadas: os números visíveis são colocados depois
+// pela aplicação (ver numerarSvg), porque a IA falha a posicioná-los.
+function sanearSvg(texto, permitirNumeros){
+  const bruto = String(texto || '');
+  const ini = bruto.indexOf('<svg');
+  const fim = bruto.lastIndexOf('</svg>');
+  if(ini === -1 || fim === -1) throw new Error('A IA não devolveu um desenho em formato SVG.');
+  const doc = new DOMParser().parseFromString(bruto.slice(ini, fim + 6), 'image/svg+xml');
+  const raiz = doc.documentElement;
+  if(!raiz || raiz.nodeName.toLowerCase() !== 'svg' || doc.querySelector('parsererror')){
+    throw new Error('O desenho gerado não é um SVG válido.');
+  }
+  const permitidos = new Set(['g', 'path', 'circle', 'ellipse', 'rect', 'line', 'polyline', 'polygon']);
+  Array.from(raiz.querySelectorAll('*')).forEach(el => {
+    if(!permitidos.has(el.nodeName.toLowerCase())) el.remove();
+  });
+  [raiz, ...Array.from(raiz.querySelectorAll('*'))].forEach(el => {
+    Array.from(el.attributes).forEach(a => {
+      const nome = a.name.toLowerCase();
+      if(nome.startsWith('on') || nome.includes('href') || nome === 'style' || /url\(|javascript:/i.test(a.value)){
+        el.removeAttribute(a.name);
+      }
+    });
+  });
+  // Normaliza o traço: formas fechadas brancas (tapam o que está atrás) com contorno preto.
+  const fechadas = new Set(['path', 'circle', 'ellipse', 'rect', 'polygon']);
+  raiz.removeAttribute('fill');
+  raiz.removeAttribute('stroke');
+  raiz.querySelectorAll('*').forEach(el => {
+    const tag = el.nodeName.toLowerCase();
+    if(tag === 'g'){ el.removeAttribute('fill'); el.removeAttribute('stroke'); return; }
+    const n = el.getAttribute('data-n');
+    Array.from(el.attributes).forEach(a => { if(a.name.startsWith('data-') && a.name !== 'data-n') el.removeAttribute(a.name); });
+    if(!(permitirNumeros && fechadas.has(tag) && /^[1-8]$/.test(n || ''))) el.removeAttribute('data-n');
+    if(fechadas.has(tag)){
+      el.setAttribute('fill', (el.getAttribute('fill') === 'none' && !el.hasAttribute('data-n')) ? 'none' : '#fff');
+    }else{
+      el.setAttribute('fill', 'none');
+    }
+    if(el.getAttribute('stroke') !== 'none') el.setAttribute('stroke', '#000');
+    const sw = parseFloat(el.getAttribute('stroke-width'));
+    el.setAttribute('stroke-width', String(sw >= 4 && sw <= 10 ? sw : 6));
+    el.setAttribute('stroke-linecap', 'round');
+    el.setAttribute('stroke-linejoin', 'round');
+  });
+  if(raiz.querySelectorAll('*').length === 0) throw new Error('O desenho gerado está vazio.');
+  if(permitirNumeros && raiz.querySelectorAll('[data-n]').length < 3){
+    throw new Error('O desenho gerado não trouxe as cores indicadas. Tenta de novo.');
+  }
+  raiz.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+  if(!raiz.getAttribute('viewBox')) raiz.setAttribute('viewBox', '0 0 800 800');
+  raiz.setAttribute('width', '800');
+  raiz.setAttribute('height', '800');
+  return new XMLSerializer().serializeToString(raiz);
+}
+
+function svgParaImagemDados(svgTexto, lado){
+  return new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(new Blob([svgTexto], { type: 'image/svg+xml;charset=utf-8' }));
+    const img = new Image();
+    img.onload = () => {
+      try{
+        const c = document.createElement('canvas');
+        c.width = lado; c.height = lado;
+        const ctx = c.getContext('2d', { willReadFrequently: true });
+        ctx.fillStyle = '#fff';
+        ctx.fillRect(0, 0, lado, lado);
+        ctx.drawImage(img, 0, 0, lado, lado);
+        resolve(ctx.getImageData(0, 0, lado, lado));
+      }catch(e){ reject(e); }
+      finally{ URL.revokeObjectURL(url); }
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('O desenho gerado não pôde ser lido como imagem.')); };
+    img.src = url;
+  });
+}
+
+// Encontra as áreas fechadas do desenho e o melhor sítio para um número em cada uma (o ponto mais
+// afastado de qualquer traço). `linha`: Uint8Array lado×lado com 1 onde há traço.
+// Ignora o fundo (áreas que tocam a borda) e áreas pequenas demais para um número legível.
+function analisarRegioesNumeracao(linha, lado){
+  const N = lado * lado;
+  const rotulo = new Int32Array(N);
+  const areas = [0];
+  const tocaBorda = [false];
+  const pilha = new Int32Array(N);
+  let n = 0;
+  for(let i = 0; i < N; i++){
+    if(linha[i] || rotulo[i]) continue;
+    n++;
+    let topo = 0, area = 0, borda = false;
+    pilha[topo++] = i; rotulo[i] = n;
+    while(topo > 0){
+      const p = pilha[--topo];
+      area++;
+      const x = p % lado, y = (p - x) / lado;
+      if(x === 0 || y === 0 || x === lado - 1 || y === lado - 1) borda = true;
+      if(x > 0){ const q = p - 1; if(!linha[q] && !rotulo[q]){ rotulo[q] = n; pilha[topo++] = q; } }
+      if(x < lado - 1){ const q = p + 1; if(!linha[q] && !rotulo[q]){ rotulo[q] = n; pilha[topo++] = q; } }
+      if(y > 0){ const q = p - lado; if(!linha[q] && !rotulo[q]){ rotulo[q] = n; pilha[topo++] = q; } }
+      if(y < lado - 1){ const q = p + lado; if(!linha[q] && !rotulo[q]){ rotulo[q] = n; pilha[topo++] = q; } }
+    }
+    areas.push(area); tocaBorda.push(borda);
+  }
+  // Distância ao traço (chamfer 3-4: 3 unidades = 1 pixel). A borda da imagem conta como traço.
+  const d = new Uint16Array(N);
+  for(let i = 0; i < N; i++) d[i] = rotulo[i] ? 60000 : 0;
+  for(let k = 0; k < lado; k++){ d[k] = 0; d[N - 1 - k] = 0; d[k * lado] = 0; d[k * lado + lado - 1] = 0; }
+  for(let y = 1; y < lado - 1; y++){
+    for(let x = 1; x < lado - 1; x++){
+      const i = y * lado + x;
+      if(!d[i]) continue;
+      let v = d[i];
+      v = Math.min(v, d[i - 1] + 3, d[i - lado - 1] + 4, d[i - lado] + 3, d[i - lado + 1] + 4);
+      d[i] = v;
+    }
+  }
+  for(let y = lado - 2; y >= 1; y--){
+    for(let x = lado - 2; x >= 1; x--){
+      const i = y * lado + x;
+      if(!d[i]) continue;
+      let v = d[i];
+      v = Math.min(v, d[i + 1] + 3, d[i + lado + 1] + 4, d[i + lado] + 3, d[i + lado - 1] + 4);
+      d[i] = v;
+    }
+  }
+  const melhorD = new Uint16Array(n + 1);
+  const melhorI = new Int32Array(n + 1).fill(-1);
+  for(let i = 0; i < N; i++){
+    const l = rotulo[i];
+    if(l && d[i] > melhorD[l]){ melhorD[l] = d[i]; melhorI[l] = i; }
+  }
+  const regioes = [];
+  for(let l = 1; l <= n; l++){
+    if(tocaBorda[l] || areas[l] < 600 || melhorI[l] < 0) continue;
+    const raio = melhorD[l] / 3;
+    if(raio < 11) continue;
+    regioes.push({ x: melhorI[l] % lado, y: Math.floor(melhorI[l] / lado), raio, area: areas[l] });
+  }
+  return regioes;
+}
+
+// Acrescenta ao SVG os números da legenda de cores, centrados em cada área. A cor de cada área vem
+// do atributo data-n da forma que a cobre (lida num "mapa de cores" desenhado à parte).
+async function numerarSvg(svgTexto, modo){
+  const lado = 800;
+  const base = await svgParaImagemDados(svgTexto, lado);
+  const linha = new Uint8Array(lado * lado);
+  for(let i = 0, j = 0; i < linha.length; i++, j += 4){
+    linha[i] = (base.data[j] * 0.3 + base.data[j + 1] * 0.59 + base.data[j + 2] * 0.11) < 150 ? 1 : 0;
+  }
+  const regioes = analisarRegioesNumeracao(linha, lado);
+  const doc = new DOMParser().parseFromString(svgTexto, 'image/svg+xml');
+  const raiz = doc.documentElement;
+  raiz.setAttribute('shape-rendering', 'crispEdges');
+  raiz.querySelectorAll('*').forEach(el => {
+    if(el.nodeName.toLowerCase() === 'g') return;
+    const n = parseInt(el.getAttribute('data-n'), 10);
+    el.setAttribute('stroke', 'none');
+    if(n >= 1 && n <= 8) el.setAttribute('fill', `rgb(${n * 30},0,0)`);
+    else el.setAttribute('fill', el.getAttribute('fill') === 'none' ? 'none' : '#fff');
+  });
+  const mapa = await svgParaImagemDados(new XMLSerializer().serializeToString(raiz), lado);
+  const achados = [];
+  regioes.forEach(r => {
+    const j = (r.y * lado + r.x) * 4;
+    if(mapa.data[j + 1] > 40) return; // sem forma numerada por cima desta área
+    const n = Math.round(mapa.data[j] / 30);
+    if(n < 1 || n > 8) return;
+    achados.push({ x: r.x, y: r.y, n, fs: Math.max(20, Math.min(46, Math.round(r.raio * 1.7))) });
+  });
+  if(achados.length < 3) throw new Error('Não foi possível numerar este desenho. Tenta de novo.');
+  const usados = Array.from(new Set(achados.map(a => a.n))).sort((a, b) => a - b);
+  // pelas letras: A, E, I, O, U... atribuídas por ordem às cores que realmente aparecem
+  const letras = modo === 'letras' ? Object.fromEntries(usados.map((n, i) => [n, LETRAS_COR[i]])) : null;
+  const textos = achados.map(a => `<text x="${a.x}" y="${Math.round(a.y + a.fs * 0.35)}" font-size="${a.fs}" font-family="Arial, Helvetica, sans-serif" font-weight="bold" text-anchor="middle" fill="#000" stroke="none">${rotuloCor(modo, a.n, letras)}</text>`);
+  return { svg: svgTexto.replace(/<\/svg>\s*$/, textos.join('') + '</svg>'), usados, letras };
+}
+
+// ---------- Biblioteca de peças (desenhos originais, feitos para esta app) ----------
+// A IA não desenha do zero (falhava as proporções e o encaixe das formas): escolhe e compõe
+// peças já desenhadas, e a app trata de numerar as áreas. Cada peça é um grupo de formas fechadas
+// com contorno; data-n é o número da cor sugerida (ver PALETA_NUMEROS). Formas sem fill herdam
+// branco do grupo; linhas soltas levam fill="none".
+const _n = (n) => n ? ` data-n="${n}"` : '';
+const _e = (cx, cy, rx, ry, n, rot) => `<ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}"${rot ? ` transform="rotate(${rot} ${cx} ${cy})"` : ''}${_n(n)}/>`;
+const _c = (cx, cy, r, n) => `<circle cx="${cx}" cy="${cy}" r="${r}"${_n(n)}/>`;
+const _p = (d, n) => `<path d="${d}"${_n(n)}/>`;
+const _g = (pts, n) => `<polygon points="${pts}"${_n(n)}/>`;
+const _r = (x, y, w, h, n, rx) => `<rect x="${x}" y="${y}" width="${w}" height="${h}"${rx ? ` rx="${rx}"` : ''}${_n(n)}/>`;
+const _l = (d) => `<path d="${d}" fill="none"/>`;
+const _o = (cx, cy, r) => `<circle cx="${cx}" cy="${cy}" r="${r}" fill="#000" stroke="none"/>`;
+const _oe = (cx, cy, rx, ry) => `<ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}" fill="#000" stroke="none"/>`;
+
+const PECAS = {
+  cao: { w: 190, h: 322, fundo: 'campo', pos: 'chao', principal: true, extras: ['ceu', 'campo'], desc: 'cão sentado', alias: ['cao', 'caes', 'cachorr', 'cadel'],
+    d: () => { const X = 95; return [
+      _p(`M${X+40} 285 Q${X+88} 275 ${X+90} 225 Q${X+70} 240 ${X+38} 252 Z`, 1),
+      _e(X, 252, 54, 62, 1),
+      _e(X-24, 306, 22, 12, 1), _e(X+24, 306, 22, 12, 1),
+      _p(`M${X-42} 164 Q${X} 172 ${X+42} 164 L${X+45} 182 Q${X} 206 ${X-45} 182 Z`, 4), _c(X, 203, 9, 3),
+      _e(X-54, 120, 18, 44, 1, 15), _e(X+54, 120, 18, 44, 1, -15),
+      _c(X, 122, 50, 1),
+      _e(X, 140, 26, 19), _oe(X, 132, 10, 7),
+      _o(X-18, 112, 5), _o(X+18, 112, 5),
+      _l(`M${X} 139 L${X} 146`), _p(`M${X-7} 153 Q${X} 178 ${X+7} 153 Z`, 6),
+    ].join(''); } },
+  gato: { w: 190, h: 325, fundo: 'campo', pos: 'chao', principal: true, extras: ['ceu', 'campo'], desc: 'gato sentado', alias: ['gat'],
+    d: () => { const X = 80; return [
+      _p(`M${X+45} 300 Q${X+100} 295 ${X+95} 215 Q${X+93} 190 ${X+75} 195 Q${X+82} 215 ${X+75} 245 Q${X+65} 275 ${X+35} 280 Z`, 7),
+      _e(X, 250, 56, 62, 7),
+      _e(X-24, 306, 22, 12, 7), _e(X+24, 306, 22, 12, 7),
+      _g(`${X-52},110 ${X-44},35 ${X-12},80`, 7), _g(`${X+52},110 ${X+44},35 ${X+12},80`, 7),
+      _c(X, 130, 52, 7),
+      _o(X-19, 122, 5), _o(X+19, 122, 5),
+      _g(`${X-6},136 ${X+6},136 ${X},144`, 6),
+      _l(`M${X} 144 Q${X-6} 154 ${X-14} 150`), _l(`M${X} 144 Q${X+6} 154 ${X+14} 150`),
+      _l(`M${X-30} 140 L${X-62} 134`), _l(`M${X-30} 147 L${X-62} 151`), _l(`M${X+30} 140 L${X+62} 134`), _l(`M${X+30} 147 L${X+62} 151`),
+    ].join(''); } },
+  coelho: { w: 150, h: 330, fundo: 'campo', pos: 'chao', principal: true, extras: ['ceu', 'campo'], desc: 'coelho sentado', alias: ['coelh', 'lebre'],
+    d: () => { const X = 75; return [
+      _e(X-30, 68, 20, 52, 8, -8), _e(X-30, 74, 9, 34, 6, -8), _e(X+30, 68, 20, 52, 8, 8), _e(X+30, 74, 9, 34, 6, 8),
+      _e(X, 255, 60, 58, 8), _e(X, 268, 34, 38),
+      _e(X-38, 312, 26, 13, 8), _e(X+38, 312, 26, 13, 8),
+      _c(X, 160, 56, 8),
+      _o(X-19, 152, 6), _o(X+19, 152, 6),
+      _g(`${X-8},168 ${X+8},168 ${X},177`, 6),
+      _l(`M${X} 177 Q${X-6} 190 ${X-17} 184`), _l(`M${X} 177 Q${X+6} 190 ${X+17} 184`),
+      _e(X-32, 172, 10, 6, 6), _e(X+32, 172, 10, 6, 6),
+    ].join(''); } },
+  carro: { w: 320, h: 155, fundo: 'campo', pos: 'chao', principal: true, extras: ['ceu', 'campo'], desc: 'carro visto de lado', alias: ['carr', 'automovel', 'viatura'],
+    d: () => [
+      _p('M20 118 L20 92 Q20 78 44 75 L88 70 L118 32 Q126 22 140 22 L212 22 Q228 22 240 38 L268 72 Q300 78 304 100 L304 118 Z', 4),
+      _p('M112 66 L134 36 L168 36 L168 66 Z', 2), _p('M180 36 L212 36 Q224 36 232 47 L250 66 L180 66 Z', 2),
+      _l('M172 70 L172 114'), _l('M184 88 L200 88'),
+      _p('M296 88 Q306 90 304 104 L292 104 Z', 3),
+      _c(80, 122, 30, 8), _c(80, 122, 13, 3), _c(244, 122, 30, 8), _c(244, 122, 13, 3),
+    ].join('') },
+  casa: { w: 300, h: 270, fundo: 'campo', pos: 'chao', principal: true, extras: ['ceu', 'campo'], desc: 'casa', alias: ['casa', 'lar', 'moradia'],
+    d: () => [
+      _r(215, 30, 36, 60, 1), _r(30, 105, 240, 160, 3), _g('10,112 150,15 290,112', 4),
+      _r(125, 165, 52, 100, 1, 4), _o(166, 218, 4),
+      _r(50, 140, 55, 55, 2), _l('M77 140 L77 195 M50 167 L105 167'),
+      _r(195, 140, 55, 55, 2), _l('M222 140 L222 195 M195 167 L250 167'),
+    ].join('') },
+  aviao: { w: 372, h: 172, fundo: 'campo', pos: 'ceu', principal: true, extras: ['ceu', 'campo'], desc: 'avião visto de lado', alias: ['avia', 'aeronave', 'aeroplano'],
+    d: () => [
+      _g('40,70 22,15 78,15 105,58', 8),
+      _p('M20 92 Q24 58 90 54 L280 54 Q352 58 356 92 Q352 126 280 130 L90 130 Q24 126 20 92 Z', 4),
+      _g('150,100 215,100 188,168 118,168', 8),
+      _p('M268 62 L322 62 Q340 68 345 88 L268 88 Z', 2),
+      _c(120, 82, 10, 2), _c(155, 82, 10, 2), _c(190, 82, 10, 2), _c(225, 82, 10, 2),
+      _e(362, 92, 9, 34, 3),
+    ].join('') },
+  barco: { w: 320, h: 200, fundo: 'mar', pos: 'agua', principal: true, extras: ['ceu', 'mar'], desc: 'barco à vela', alias: ['barc', 'veleiro', 'navio'],
+    d: () => [
+      _r(156, 12, 10, 130, 1), _g('154,24 154,128 68,128', 3), _g('168,44 168,128 236,128', 6), _g('166,12 196,22 166,32', 4),
+      _p('M26 132 L294 132 Q276 192 236 198 L86 198 Q46 192 26 132 Z', 4),
+      _l('M44 152 L276 152'), _c(120, 174, 9, 2), _c(160, 174, 9, 2), _c(200, 174, 9, 2),
+    ].join('') },
+  peixe: { w: 300, h: 190, fundo: 'mar', pos: 'agua', principal: true, extras: ['mar'], desc: 'peixe', alias: ['peix'],
+    d: () => [
+      _p('M228 96 L296 36 Q282 96 296 156 Z', 7), _p('M92 52 Q138 -8 188 50 Z', 4), _p('M120 140 Q150 186 190 140 Z', 4),
+      _e(138, 96, 100, 62, 7),
+      _c(78, 82, 13), _o(76, 82, 6),
+      _l('M112 62 Q132 96 112 130'), _l('M40 104 Q54 112 66 104'),
+      _l('M160 70 Q176 82 160 94'), _l('M190 80 Q206 92 190 104'), _l('M160 104 Q176 116 160 128'),
+    ].join('') },
+  tartaruga: { w: 340, h: 188, fundo: 'mar', pos: 'agua', principal: true, extras: ['mar'], desc: 'tartaruga', alias: ['tartarug', 'cagado'],
+    d: () => [
+      _e(95, 168, 30, 17, 3), _e(235, 168, 30, 17, 3), _g('44,142 10,154 44,160', 3),
+      _p('M34 138 L296 138 Q296 166 262 166 L68 166 Q34 166 34 138 Z', 3),
+      _p('M40 140 Q46 34 165 32 Q284 34 290 140 Z', 5),
+      _l('M165 32 L165 140'), _l('M105 50 Q118 92 100 140'), _l('M225 50 Q212 92 230 140'), _l('M60 96 Q165 80 270 96'),
+      _e(312, 112, 26, 22, 3), _o(320, 106, 4), _l('M326 120 Q334 122 337 118'),
+    ].join('') },
+  borboleta: { w: 260, h: 230, fundo: 'campo', pos: 'ceu', principal: true, extras: ['ceu', 'campo'], desc: 'borboleta', alias: ['borboleta'],
+    d: () => { const X = 130; return [
+      _p(`M${X-4} 96 Q60 -8 14 38 Q-6 92 ${X-4} 118 Z`, 6), _p(`M${X+4} 96 Q200 -8 246 38 Q266 92 ${X+4} 118 Z`, 6),
+      _p(`M${X-4} 122 Q26 120 34 186 Q50 226 ${X-4} 156 Z`, 2), _p(`M${X+4} 122 Q234 120 226 186 Q210 226 ${X+4} 156 Z`, 2),
+      _c(76, 56, 16, 3), _c(184, 56, 16, 3), _c(80, 168, 12, 3), _c(180, 168, 12, 3),
+      _e(X, 125, 11, 60, 1), _c(X, 58, 14, 1),
+      _l(`M${X-6} 48 Q${X-20} 16 ${X-36} 12`), _l(`M${X+6} 48 Q${X+20} 16 ${X+36} 12`),
+    ].join(''); } },
+  passaro: { w: 140, h: 100, fundo: 'campo', pos: 'ceu', principal: true, extra: 'ceu', extras: ['ceu', 'campo'], desc: 'pássaro', alias: ['passar', 'ave'],
+    d: () => [
+      _g('36,52 6,34 10,70', 2), _e(70, 56, 40, 28, 2), _p('M50 56 Q70 34 92 58 Q70 72 50 56 Z', 8),
+      _c(108, 38, 18, 2), _g('124,33 146,40 124,47', 7), _o(112, 34, 3.5),
+      _l('M62 84 L62 98 M78 84 L78 98'),
+    ].join('') },
+  sol: { w: 200, h: 200, extra: 'ceu', desc: 'sol',
+    d: () => { let r = ''; for(let i = 0; i < 8; i++){ const a = i * Math.PI / 4, b = 0.24;
+      const f = (rad, ang) => `${(100 + rad * Math.cos(ang)).toFixed(1)},${(100 + rad * Math.sin(ang)).toFixed(1)}`;
+      r += _g(`${f(56, a - b)} ${f(92, a)} ${f(56, a + b)}`, 3); }
+      return r + _c(100, 100, 46, 3); } },
+  nuvem: { w: 240, h: 120, extra: 'ceu', desc: 'nuvem',
+    d: () => _p('M42 112 Q4 112 8 84 Q12 58 44 58 Q48 22 92 22 Q122 4 150 28 Q190 20 200 58 Q234 60 232 88 Q230 112 194 112 Z', 8) },
+  arvore: { w: 160, h: 230, extra: 'campo', desc: 'árvore',
+    d: () => [
+      _r(65, 130, 32, 98, 1),
+      _p('M80 10 Q125 5 140 40 Q165 60 145 95 Q150 135 105 140 Q80 155 55 140 Q10 135 20 95 Q0 60 25 40 Q35 5 80 10 Z', 5),
+      _c(60, 60, 9, 4), _c(105, 45, 9, 4), _c(112, 100, 9, 4), _c(55, 105, 9, 4),
+    ].join('') },
+  flor: { w: 110, h: 190, extra: 'campo', desc: 'flor',
+    d: () => [
+      _l('M55 100 L55 188'), _p('M55 160 Q95 128 105 148 Q95 184 55 160 Z', 5),
+      ...[0, 1, 2, 3, 4, 5].map(i => { const a = i * Math.PI / 3; return _c((55 + 30 * Math.cos(a)).toFixed(1), (55 + 30 * Math.sin(a)).toFixed(1), 22, 6); }),
+      _c(55, 55, 18, 3),
+    ].join('') },
+  alga: { w: 100, h: 170, extra: 'mar', desc: 'alga',
+    d: () => [
+      _p('M28 168 Q0 120 26 84 Q44 56 24 20 Q60 44 50 84 Q38 122 56 168 Z', 5),
+      _p('M44 168 Q70 130 56 96 Q48 74 66 46 Q92 84 80 118 Q72 146 88 168 Z', 5),
+    ].join('') },
+  estrela_mar: { w: 130, h: 130, extra: 'mar', desc: 'estrela-do-mar',
+    d: () => { const pts = []; for(let i = 0; i < 10; i++){ const a = -Math.PI / 2 + i * Math.PI / 5, r = i % 2 === 0 ? 62 : 26; pts.push(`${(65 + r * Math.cos(a)).toFixed(1)},${(65 + r * Math.sin(a)).toFixed(1)}`); }
+      return _g(pts.join(' '), 7) + _c(65, 62, 4) + _c(50, 50, 3) + _c(80, 50, 3); } },
+};
+const EXTRAS_PADRAO = { campo: ['sol', 'nuvem', 'flor'], mar: ['alga', 'estrela_mar'] };
+const SLOTS_CEU = [{ x: 150, y: 150, w: 150, h: 110 }, { x: 650, y: 140, w: 170, h: 130 }, { x: 400, y: 105, w: 120, h: 80 }];
+const SLOTS_CHAO = [{ x: 105, y: 735, w: 130, h: 200 }, { x: 695, y: 735, w: 130, h: 200 }];
+
+// Coloca uma peça no desenho: ancora 'base' (x,y = pé da peça) ou 'centro'. O contorno mantém sempre a
+// mesma espessura no papel, qualquer que seja a escala. `colorida`: pinta as áreas com a cor sugerida.
+function colocarPeca(id, x, y, maxW, maxH, ancora, colorida){
+  const P = PECAS[id];
+  const s = Math.min(maxW / P.w, maxH / P.h);
+  const tx = x - P.w * s / 2;
+  const ty = ancora === 'centro' ? y - P.h * s / 2 : y - P.h * s;
+  let corpo = P.d();
+  if(colorida){
+    corpo = corpo.replace(/ data-n="([1-8])"/g, (m, n) => { const c = PALETA_NUMEROS[n - 1].cor; return ` fill="rgb(${c.join(',')})"${m}`; });
+  }
+  return `<g transform="translate(${tx.toFixed(1)} ${ty.toFixed(1)}) scale(${s.toFixed(3)})" fill="#fff" stroke="#000" stroke-width="${(6.5 / s).toFixed(2)}" stroke-linejoin="round" stroke-linecap="round">${corpo}</g>`;
+}
+
+const SVG_ABRE = '<svg viewBox="0 0 800 800" width="800" height="800" xmlns="http://www.w3.org/2000/svg">';
+
+// Cena: moldura com céu/água (área numerada) e chão (relva ou areia), peças extras nos cantos e a peça
+// principal ao centro. As áreas de fundo também levam número, como nas fichas em papel.
+function montarCenaPecas(principalId, extrasIds){
+  const P = PECAS[principalId];
+  let s = SVG_ABRE;
+  s += '<rect x="30" y="30" width="740" height="740" rx="14" fill="#fff" stroke="#000" stroke-width="6" data-n="2"/>';
+  if(P.fundo === 'mar'){
+    s += '<path d="M30 665 Q130 640 230 665 T430 665 T630 665 T770 660 L770 756 Q770 770 756 770 L44 770 Q30 770 30 756 Z" fill="#fff" stroke="#000" stroke-width="6" data-n="3"/>';
+  }else{
+    s += '<path d="M30 585 Q130 550 230 585 T430 585 T630 585 T770 580 L770 756 Q770 770 756 770 L44 770 Q30 770 30 756 Z" fill="#fff" stroke="#000" stroke-width="6" data-n="5"/>';
+  }
+  let ic = 0, ig = 0;
+  (extrasIds || []).forEach(id => {
+    const E = PECAS[id];
+    if(!E) return;
+    if(E.extra === 'ceu'){ const sl = SLOTS_CEU[ic++]; if(sl) s += colocarPeca(id, sl.x, sl.y, sl.w, sl.h, 'centro'); }
+    else{ const sl = SLOTS_CHAO[ig++]; if(sl) s += colocarPeca(id, sl.x, sl.y, sl.w, sl.h, 'base'); }
+  });
+  if(P.pos === 'chao') s += colocarPeca(principalId, 400, 722, 500, 470, 'base');
+  else if(P.pos === 'ceu') s += colocarPeca(principalId, 400, 380, 470, 300, 'centro');
+  else s += colocarPeca(principalId, 400, 400, 470, 300, 'centro');
+  s += '<rect x="30" y="30" width="740" height="740" rx="14" fill="none" stroke="#000" stroke-width="14"/>';
+  return s + '</svg>';
+}
+
+function normalizarTexto(t){
+  return String(t || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+}
+
+// Procura no tema uma peça principal (por prefixo das palavras); null se nenhuma servir.
+function pecaPorTema(tema){
+  const palavras = normalizarTexto(tema).split(/[^a-z]+/).filter(Boolean);
+  for(const id of Object.keys(PECAS)){
+    if(!PECAS[id].principal) continue;
+    if(PECAS[id].alias.some(a => palavras.some(p => p.startsWith(a)))) return id;
+  }
+  return null;
+}
+
+function validarEscolhaCena(obj, tema){
+  let principal = obj && typeof obj.principal === 'string' ? obj.principal.trim() : '';
+  if(!(PECAS[principal] && PECAS[principal].principal)) principal = pecaPorTema(tema);
+  if(!principal) return { principal: null, extras: [] };
+  const P = PECAS[principal];
+  const ok = (id) => PECAS[id] && id !== principal && PECAS[id].extra && P.extras.includes(PECAS[id].extra);
+  let extras = (obj && Array.isArray(obj.extras) ? obj.extras : []).filter((id, i, a) => typeof id === 'string' && ok(id) && a.indexOf(id) === i);
+  if(extras.length === 0) extras = EXTRAS_PADRAO[P.fundo === 'mar' ? 'mar' : 'campo'].filter(ok);
+  return { principal, extras: extras.slice(0, 4) };
+}
+
+function extrairObjetoJson(texto){
+  const t = String(texto || '');
+  const i = t.indexOf('{'), j = t.lastIndexOf('}');
+  if(i === -1 || j <= i) return null;
+  try{ return JSON.parse(t.slice(i, j + 1)); }catch(e){ return null; }
+}
+
+function construirPromptCena(tema, idade, numero, total, perfil, anteriores){
+  const lista = Object.entries(PECAS).map(([id, p]) => `- ${id}: ${p.desc} (${p.principal ? 'pode ser principal' : 'só extra'}${p.extra ? `; extra de ${p.extra === 'ceu' ? 'céu' : p.extra === 'mar' ? 'fundo do mar' : 'campo'}` : ''})`).join('\n');
+  return `Vais compor a cena de uma ficha para colorir, para uma criança ou jovem de ${textoIdadeFicha(idade)}. Tema pedido: ${tema}.${total > 1 ? ` É o desenho ${numero} de ${total}: escolhe uma cena diferente das anteriores${anteriores && anteriores.length ? ` (já usadas: ${anteriores.join('; ')})` : ''}.` : ''}
+${perfil && perfil.texto ? `Perfil da criança (usa-o só para decidir quantas peças extras pôr: menos peças se houver dificuldades de atenção): ${perfil.texto}\n` : ''}Peças disponíveis:
+${lista}
+Escolhe a peça principal que melhor representa o tema (se nenhuma servir de forma razoável, devolve null) e até 3 peças extras compatíveis: peças de campo/céu (sol, nuvem, passaro, arvore, flor) para os principais terrestres e aéreos; alga e estrela_mar para peixe e tartaruga; para barco, sol, nuvem, passaro ou alga.
+Devolve APENAS JSON, sem texto à volta: {"principal":"cao","extras":["sol","nuvem","flor"]}`;
+}
+
+// Pontos para ligar: percorre o contorno da peça (silhueta a preto, desenhada à parte) e distribui N pontos
+// à mesma distância uns dos outros, com o número ao lado, fora da figura.
+function tracarContorno(mascara, lado){
+  // Segue as arestas entre pixels (com a figura sempre à direita) a partir do canto superior esquerdo do
+  // primeiro pixel da figura: percorre o contorno exterior completo, sem se perder nas reentrâncias.
+  let sx = -1, sy = -1;
+  for(let y = 0; y < lado && sx < 0; y++) for(let x = 0; x < lado; x++){ if(mascara[y * lado + x]){ sx = x; sy = y; break; } }
+  if(sx < 0) return [];
+  const fg = (x, y) => x >= 0 && y >= 0 && x < lado && y < lado && mascara[y * lado + x] === 1;
+  const DX = [1, 0, -1, 0], DY = [0, 1, 0, -1]; // 0 = este, 1 = sul, 2 = oeste, 3 = norte
+  // pixels logo à frente do vértice (x,y), à esquerda e à direita, conforme o sentido d
+  const frente = (x, y, d) => d === 0 ? [[x, y - 1], [x, y]] : d === 1 ? [[x, y], [x - 1, y]] : d === 2 ? [[x - 1, y], [x - 1, y - 1]] : [[x - 1, y - 1], [x, y - 1]];
+  const pts = [];
+  let x = sx, y = sy, d = 0;
+  for(let passo = 0; passo < lado * lado * 2; passo++){
+    const [esq, dir] = frente(x, y, d);
+    if(fg(esq[0], esq[1])) d = (d + 3) % 4;
+    else if(fg(dir[0], dir[1])) { /* em frente */ }
+    else d = (d + 1) % 4;
+    x += DX[d]; y += DY[d];
+    pts.push([x, y]);
+    if(x === sx && y === sy) break;
+  }
+  return pts;
+}
+
+// Junta partes que quase se tocam (ex.: cabeça e corpo com um pequeno intervalo) para o contorno ser um só.
+function dilatarMascara(m, lado, r){
+  const t = new Uint8Array(m.length), o = new Uint8Array(m.length);
+  for(let y = 0; y < lado; y++){
+    for(let x = 0; x < lado; x++){
+      if(!m[y * lado + x]) continue;
+      for(let k = Math.max(0, x - r); k <= Math.min(lado - 1, x + r); k++) t[y * lado + k] = 1;
+    }
+  }
+  for(let y = 0; y < lado; y++){
+    for(let x = 0; x < lado; x++){
+      if(!t[y * lado + x]) continue;
+      for(let k = Math.max(0, y - r); k <= Math.min(lado - 1, y + r); k++) o[k * lado + x] = 1;
+    }
+  }
+  return o;
+}
+
+// Fecho morfológico: tapa intervalos estreitos (< 2r) sem engrossar a figura.
+function fecharMascara(m, lado, r){
+  const d = dilatarMascara(m, lado, r);
+  const inv = new Uint8Array(d.length);
+  for(let i = 0; i < d.length; i++) inv[i] = d[i] ? 0 : 1;
+  const e = dilatarMascara(inv, lado, r);
+  for(let i = 0; i < e.length; i++) e[i] = e[i] ? 0 : 1;
+  return e;
+}
+
+// Mantém só o maior bloco ligado da máscara.
+function maiorComponente(m, lado){
+  const N = lado * lado, rot = new Int32Array(N), pilha = new Int32Array(N);
+  let n = 0, melhor = 0, melhorArea = 0;
+  for(let i = 0; i < N; i++){
+    if(!m[i] || rot[i]) continue;
+    n++; let topo = 0, area = 0; pilha[topo++] = i; rot[i] = n;
+    while(topo > 0){
+      const p = pilha[--topo]; area++;
+      const x = p % lado;
+      if(x > 0 && m[p - 1] && !rot[p - 1]){ rot[p - 1] = n; pilha[topo++] = p - 1; }
+      if(x < lado - 1 && m[p + 1] && !rot[p + 1]){ rot[p + 1] = n; pilha[topo++] = p + 1; }
+      if(p >= lado && m[p - lado] && !rot[p - lado]){ rot[p - lado] = n; pilha[topo++] = p - lado; }
+      if(p < N - lado && m[p + lado] && !rot[p + lado]){ rot[p + lado] = n; pilha[topo++] = p + lado; }
+    }
+    if(area > melhorArea){ melhorArea = area; melhor = n; }
+  }
+  const o = new Uint8Array(N);
+  for(let i = 0; i < N; i++) if(rot[i] === melhor) o[i] = 1;
+  return o;
+}
+
+async function montarPontosSvg(principalId, quantidade){
+  const lado = 800;
+  const corpo = colocarPeca(principalId, 420, 455, 500, 430, 'centro');
+  const doc = new DOMParser().parseFromString(`${SVG_ABRE}${corpo}</svg>`, 'image/svg+xml');
+  const raiz = doc.documentElement;
+  Array.from(raiz.querySelectorAll('*')).forEach(el => {
+    if(el.nodeName.toLowerCase() === 'g') return;
+    if(el.getAttribute('fill') === 'none'){ el.remove(); return; } // linhas soltas não contam para a silhueta
+    el.setAttribute('fill', '#000'); el.setAttribute('stroke', '#000');
+  });
+  const img = await svgParaImagemDados(new XMLSerializer().serializeToString(raiz), lado);
+  const mascara = new Uint8Array(lado * lado);
+  for(let i = 0, j = 0; i < mascara.length; i++, j += 4) mascara[i] = img.data[j] < 128 ? 1 : 0;
+  const contorno = tracarContorno(maiorComponente(fecharMascara(mascara, lado, 10), lado), lado);
+  if(contorno.length < quantidade * 3) throw new Error('Não foi possível extrair o contorno deste desenho.');
+  // distribui os pontos pelo perímetro
+  const acum = [0];
+  for(let i = 1; i <= contorno.length; i++){
+    const a = contorno[i - 1], b = contorno[i % contorno.length];
+    acum.push(acum[i - 1] + Math.hypot(b[0] - a[0], b[1] - a[1]));
+  }
+  const total = acum[acum.length - 1];
+  const pontos = [];
+  let idx = 0;
+  for(let k = 0; k < quantidade; k++){
+    const alvo = total * k / quantidade;
+    while(idx < contorno.length - 1 && acum[idx + 1] < alvo) idx++;
+    pontos.push(contorno[idx]);
+  }
+  let s = `${SVG_ABRE}<rect x="30" y="30" width="740" height="740" rx="14" fill="#fff" stroke="#000" stroke-width="14"/>`;
+  s += colocarPeca(principalId, 125, 125, 130, 120, 'centro', true);
+  pontos.forEach((p, i) => {
+    const a = pontos[(i + quantidade - 2) % quantidade], b = pontos[(i + 2) % quantidade];
+    let tx = b[0] - a[0], ty = b[1] - a[1];
+    const m = Math.hypot(tx, ty) || 1; tx /= m; ty /= m;
+    let nx = ty, ny = -tx; // normal; vira-a para fora da figura
+    const sonda = (px, py) => { const X = Math.round(px), Y = Math.round(py); return X >= 0 && Y >= 0 && X < lado && Y < lado && mascara[Y * lado + X] === 1; };
+    if(sonda(p[0] + nx * 14, p[1] + ny * 14)){ nx = -nx; ny = -ny; }
+    const lx = Math.min(745, Math.max(55, p[0] + nx * 20)), ly = Math.min(745, Math.max(60, p[1] + ny * 20));
+    s += `<circle cx="${p[0]}" cy="${p[1]}" r="5" fill="#000" stroke="none"/>`;
+    s += `<text x="${lx.toFixed(0)}" y="${(ly + 6).toFixed(0)}" font-size="${quantidade > 45 ? 16 : 19}" font-family="Arial, Helvetica, sans-serif" font-weight="bold" text-anchor="middle" fill="#444" stroke="none">${i + 1}</text>`;
+  });
+  return { svg: s + '</svg>', usados: [], pontos: quantidade };
+}
+
+function quantidadePontosPorIdade(idade){
+  const t = String(idade || '');
+  let n = parseInt(t, 10);
+  if(t === '16+') n = 16;
+  if(!(n > 0)) n = 6;
+  if(n <= 4) return 20;
+  if(n <= 6) return 30;
+  if(n <= 8) return 40;
+  if(n <= 10) return 50;
+  if(n <= 12) return 60;
+  return 70;
+}
+
+// Cria um desenho: a IA só escolhe e compõe peças da biblioteca (JSON curto); a app desenha e numera.
+// Se nenhuma peça servir para o tema, recorre ao desenho "do zero" pela IA (qualidade menor).
+async function criarDesenho({ tema, idade, numero, total, modo, perfil, pedir, anteriores }){
+  let escolha;
+  try{
+    const texto = await pedir(construirPromptCena(tema, idade, numero, total, perfil, anteriores), 600);
+    escolha = validarEscolhaCena(extrairObjetoJson(texto), tema);
+  }catch(e){
+    if(e && e.naoRepetir) throw e;
+    escolha = validarEscolhaCena(null, tema);
+  }
+  if(escolha.principal){
+    const nome = PECAS[escolha.principal].desc;
+    if(modo === 'pontos'){
+      const r = await montarPontosSvg(escolha.principal, quantidadePontosPorIdade(idade));
+      return { ...r, nome };
+    }
+    const svg = montarCenaPecas(escolha.principal, escolha.extras);
+    if(modo === 'livre') return { svg, usados: [], nome };
+    return { ...(await numerarSvg(svg, modo)), nome };
+  }
+  if(modo === 'pontos'){
+    const ex = Object.keys(PECAS).filter(id => PECAS[id].principal).map(id => PECAS[id].desc).join(', ');
+    throw new Error(`Para ligar pontos preciso de um desenho da biblioteca. Experimenta um destes temas: ${ex}.`);
+  }
+  const texto = await pedir(construirPromptDesenho(tema, idade, numero, total, modo, perfil), 6000);
+  const svg = sanearSvg(texto, modo !== 'livre');
+  if(modo === 'livre') return { svg, usados: [], nome: tema, doZero: true };
+  return { ...(await numerarSvg(svg, modo)), nome: tema, doZero: true };
+}
+
+function svgParaPng(svgTexto, lado){
+  return new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(new Blob([svgTexto], { type: 'image/svg+xml;charset=utf-8' }));
+    const img = new Image();
+    img.onload = () => {
+      try{
+        const c = document.createElement('canvas');
+        c.width = lado; c.height = lado;
+        const ctx = c.getContext('2d');
+        ctx.fillStyle = '#fff';
+        ctx.fillRect(0, 0, lado, lado);
+        ctx.drawImage(img, 0, 0, lado, lado);
+        resolve(c.toDataURL('image/png'));
+      }catch(e){ reject(e); }
+      finally{ URL.revokeObjectURL(url); }
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('O desenho gerado não pôde ser lido como imagem.')); };
+    img.src = url;
+  });
+}
+
+function poligonoPdf(doc, pts){
+  const rel = [];
+  for(let i = 1; i < pts.length; i++) rel.push([pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]]);
+  doc.lines(rel, pts[0][0], pts[0][1], [1, 1], 'S', true);
+}
+
+function formaPdf(doc, forma, cx, cy, r){
+  if(forma === 'circulo'){ doc.circle(cx, cy, r, 'S'); return; }
+  if(forma === 'quadrado'){ doc.rect(cx - r, cy - r, r * 2, r * 2, 'S'); return; }
+  let pts = [];
+  if(forma === 'triangulo'){
+    pts = [[cx, cy - r], [cx + r, cy + r * 0.8], [cx - r, cy + r * 0.8]];
+  }else if(forma === 'coracao'){
+    for(let i = 0; i < 40; i++){
+      const t = (i / 40) * Math.PI * 2;
+      const x = 16 * Math.pow(Math.sin(t), 3);
+      const y = 13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t);
+      pts.push([cx + x * r / 17, cy - y * r / 17]);
+    }
+  }else{
+    for(let i = 0; i < 10; i++){
+      const ang = -Math.PI / 2 + i * Math.PI / 5;
+      const rr = i % 2 === 0 ? r : r * 0.45;
+      pts.push([cx + Math.cos(ang) * rr, cy + Math.sin(ang) * rr]);
+    }
+  }
+  poligonoPdf(doc, pts);
+}
+
+// Logótipo da app: lê-se do próprio ecrã inicial (já está na página), em vez de o duplicar no código.
+let logotipoPdfCache = null;
+async function obterLogotipoPdf(){
+  if(logotipoPdfCache) return logotipoPdfCache;
+  try{
+    const img = document.querySelector('img.logo-app');
+    if(!img) return null;
+    if(!img.complete){
+      await new Promise(ok => { img.addEventListener('load', ok, { once: true }); img.addEventListener('error', ok, { once: true }); });
+    }
+    if(!img.naturalWidth) return null;
+    const lado = Math.min(img.naturalWidth, 400);
+    const alt = Math.round(lado * img.naturalHeight / img.naturalWidth);
+    const c = document.createElement('canvas');
+    c.width = lado; c.height = alt;
+    const ctx = c.getContext('2d');
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(0, 0, lado, alt);
+    ctx.drawImage(img, 0, 0, lado, alt);
+    logotipoPdfCache = { data: c.toDataURL('image/jpeg', 0.92), proporcao: alt / lado };
+    return logotipoPdfCache;
+  }catch(e){ return null; }
+}
+
+// Moldura dupla, como nas fichas de trabalho em papel.
+function molduraPdf(doc){
+  const L = doc.internal.pageSize.getWidth();
+  const A = doc.internal.pageSize.getHeight();
+  doc.setDrawColor(40);
+  doc.setLineWidth(1.8);
+  doc.rect(22, 22, L - 44, A - 44, 'S');
+  doc.setLineWidth(0.7);
+  doc.rect(30, 30, L - 60, A - 60, 'S');
+}
+
+// Caixa com Escola / Turma / Nome / Data à esquerda e o logótipo à direita. Devolve o y seguinte.
+function cabecalhoPdf(doc, logo, y0, margem, largura){
+  const alto = 62;
+  const ladoLogo = 62;
+  const larguraCaixa = largura - ladoLogo - 10;
+  doc.setDrawColor(60);
+  doc.setLineWidth(1);
+  doc.roundedRect(margem, y0, larguraCaixa, alto, 6, 6, 'S');
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(9);
+  doc.setTextColor(90);
+  const campo = (rotulo, x, yy, ate) => {
+    doc.text(rotulo, x, yy);
+    const xi = x + doc.getTextWidth(rotulo) + 4;
+    doc.setDrawColor(150);
+    doc.setLineWidth(0.6);
+    doc.line(xi, yy + 1.5, ate, yy + 1.5);
+  };
+  const x0 = margem + 10;
+  const corte = margem + larguraCaixa * 0.64;
+  campo('Escola:', x0, y0 + 22, corte - 12);
+  campo('Turma:', corte, y0 + 22, margem + larguraCaixa - 10);
+  campo('Nome:', x0, y0 + 46, corte - 12);
+  campo('Data:', corte, y0 + 46, margem + larguraCaixa - 10);
+  doc.setTextColor(0);
+  const xl = margem + largura - ladoLogo;
+  if(logo){
+    const h = ladoLogo * logo.proporcao;
+    doc.addImage(logo.data, 'JPEG', xl, y0 + (alto - h) / 2, ladoLogo, h);
+  }else{
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(16);
+    doc.setTextColor(30, 60, 120);
+    doc.text('EduKids', xl + ladoLogo / 2, y0 + alto / 2 + 5, { align: 'center' });
+    doc.setTextColor(0);
+  }
+  return y0 + alto + 16;
+}
+
+function tituloCentradoPdf(doc, texto, y, larguraMax){
+  const L = doc.internal.pageSize.getWidth();
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(15);
+  doc.setTextColor(0);
+  const linhas = doc.splitTextToSize(limparTextoPdf(texto).toUpperCase(), larguraMax);
+  doc.text(linhas, L / 2, y + 14, { align: 'center' });
+  return y + linhas.length * 19 + 10;
+}
+
+// Legenda de cores: círculo com o número (ou a letra) e o nome da cor por baixo. Só as cores usadas.
+function legendaCoresPdf(doc, yCentro, usados, modo, letras){
+  const L = doc.internal.pageSize.getWidth();
+  const lista = PALETA_NUMEROS.filter(c => !usados || usados.length === 0 || usados.includes(c.n));
+  const r = 16;
+  const passo = Math.min(66, 460 / Math.max(1, lista.length - 1));
+  const x0 = L / 2 - passo * (lista.length - 1) / 2;
+  lista.forEach((c, k) => {
+    const x = x0 + k * passo;
+    doc.setFillColor(c.cor[0], c.cor[1], c.cor[2]);
+    doc.circle(x, yCentro, r, 'F');
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(15);
+    doc.setTextColor(c.texto);
+    doc.text(rotuloCor(modo, c.n, letras), x, yCentro + 5.5, { align: 'center' });
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(8.5);
+    doc.setTextColor(60);
+    doc.text(c.nome, x, yCentro + r + 12, { align: 'center' });
+  });
+  doc.setTextColor(0);
+}
+
+function rodapePaginasPdf(doc){
+  const total = doc.internal.getNumberOfPages();
+  if(total < 2) return;
+  const L = doc.internal.pageSize.getWidth();
+  const A = doc.internal.pageSize.getHeight();
+  for(let p = 1; p <= total; p++){
+    doc.setPage(p);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(8);
+    doc.setTextColor(130);
+    doc.text(p + '/' + total, L / 2, A - 38, { align: 'center' });
+  }
+  doc.setTextColor(0);
+}
+
+async function montarPdfFicha(ficha){
+  const { jsPDF } = await import('https://cdn.jsdelivr.net/npm/jspdf@2.5.2/+esm');
+  const doc = new jsPDF({ unit: 'pt', format: 'a4' });
+  const margem = 52;
+  const A = doc.internal.pageSize.getHeight();
+  const largura = doc.internal.pageSize.getWidth() - margem * 2;
+  const logo = await obterLogotipoPdf();
+  let y = 44;
+  const garantir = (h) => { if(y + h > A - 56){ doc.addPage(); molduraPdf(doc); y = 48; } };
+
+  molduraPdf(doc);
+  y = cabecalhoPdf(doc, logo, y, margem, largura);
+  y = tituloCentradoPdf(doc, ficha.titulo, y + 4, largura) + 6;
+
+  ficha.exercicios.forEach((ex, i) => {
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(13);
+    const enun = doc.splitTextToSize((i + 1) + '. ' + ex.enunciado, largura);
+    const hEnun = enun.length * 17 + 8;
+    let hCorpo = 0;
+    const perRow = Math.max(1, Math.floor(largura / 64));
+    if(ex.tipo === 'contar') hCorpo = 56;
+    else if(ex.tipo === 'ligar') hCorpo = ex.pares.length * 32 + 8;
+    else if(ex.tipo === 'circular') hCorpo = Math.ceil(ex.opcoes.length / perRow) * 50 + 6;
+    else if(ex.tipo === 'completar') hCorpo = ex.itens.length * 34;
+    else if(ex.tipo === 'tracar') hCorpo = 176;
+    else if(ex.tipo === 'escrever') hCorpo = ex.linhas * 36 + 6;
+    garantir(hEnun + hCorpo);
+
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(13);
+    doc.setTextColor(0);
+    doc.text(enun, margem, y + 13);
+    y += hEnun;
+    doc.setDrawColor(0);
+    doc.setLineWidth(1.4);
+
+    if(ex.tipo === 'contar'){
+      for(let k = 0; k < ex.quantidade; k++) formaPdf(doc, ex.forma, margem + 16 + k * 34, y + 18, 11);
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(10);
+      doc.text('Resposta:', margem + largura - 108, y + 22);
+      doc.rect(margem + largura - 48, y, 44, 36, 'S');
+    }else if(ex.tipo === 'ligar'){
+      const ordem = ex.pares.map((_, k) => k);
+      ordem.push(ordem.shift()); // coluna da direita noutra ordem
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(14);
+      const larguraEsq = Math.max(...ex.pares.map(p => doc.getTextWidth(p.esq)));
+      const xL = margem + 8 + larguraEsq + 22;
+      const xR = Math.min(xL + 150, margem + largura - 170);
+      ex.pares.forEach((p, k) => {
+        const yy = y + k * 32 + 16;
+        doc.text(p.esq, margem + 8, yy + 4);
+        doc.circle(xL, yy, 3.5, 'F');
+        doc.circle(xR, yy, 3.5, 'F');
+        doc.text(ex.pares[ordem[k]].dir, xR + 14, yy + 4);
+      });
+    }else if(ex.tipo === 'circular'){
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(26);
+      ex.opcoes.forEach((o, k) => {
+        doc.text(o, margem + (k % perRow) * 64 + 32, y + Math.floor(k / perRow) * 50 + 30, { align: 'center' });
+      });
+    }else if(ex.tipo === 'completar'){
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(20);
+      ex.itens.forEach((it, k) => doc.text(it.replace(/_/g, ' ___ '), margem + 8, y + k * 34 + 22));
+    }else if(ex.tipo === 'tracar'){
+      doc.setDrawColor(200); doc.setLineWidth(0.8);
+      for(let k = 0; k < 3; k++){
+        const base = y + k * 56 + 44;
+        doc.line(margem, base, margem + largura, base);
+        if(k < 2){
+          doc.setFont('helvetica', 'bold'); doc.setFontSize(40); doc.setTextColor(190);
+          doc.text(ex.texto, margem + 8, base - 6);
+          doc.setTextColor(0);
+        }
+      }
+    }else if(ex.tipo === 'escrever'){
+      doc.setDrawColor(150); doc.setLineWidth(0.8);
+      for(let k = 0; k < ex.linhas; k++) doc.line(margem, y + (k + 1) * 36, margem + largura, y + (k + 1) * 36);
+    }
+    y += hCorpo + 16;
+  });
+
+  const solucoes = ficha.exercicios.map((ex, i) => ex.resposta ? (i + 1) + ') ' + ex.resposta : '').filter(Boolean);
+  if(solucoes.length){
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(9);
+    const linhas = doc.splitTextToSize('Soluções (para os pais):   ' + solucoes.join('     '), largura);
+    garantir(linhas.length * 12 + 6);
+    doc.setTextColor(120);
+    doc.text(linhas, margem, y + 10);
+    doc.setTextColor(0);
+  }
+  rodapePaginasPdf(doc);
+  return doc;
+}
+
+async function montarPdfDesenhos(desenho){
+  const { jsPDF } = await import('https://cdn.jsdelivr.net/npm/jspdf@2.5.2/+esm');
+  const doc = new jsPDF({ unit: 'pt', format: 'a4' });
+  const L = doc.internal.pageSize.getWidth();
+  const A = doc.internal.pageSize.getHeight();
+  const margem = 52;
+  const largura = L - margem * 2;
+  const modo = desenho.modo;
+  const comLegenda = modo === 'numeros' || modo === 'letras';
+  const logo = await obterLogotipoPdf();
+  for(let i = 0; i < desenho.desenhos.length; i++){
+    const d = desenho.desenhos[i];
+    if(i > 0) doc.addPage();
+    molduraPdf(doc);
+    let y = cabecalhoPdf(doc, logo, 44, margem, largura);
+    const titulo = modo === 'pontos' ? `Liga os pontos de 1 a ${d.pontos} e descobre o desenho.`
+      : modo === 'letras' ? 'Usa as cores indicadas pelas letras para colorir a imagem.'
+      : modo === 'numeros' ? 'Pinta o desenho de acordo com a legenda dos números.'
+      : 'Pinta o desenho como quiseres.';
+    y = tituloCentradoPdf(doc, titulo, y + 4, largura);
+    const reserva = comLegenda ? 84 : 20;
+    const lado = Math.min(largura, A - 52 - y - reserva);
+    const png = await svgParaPng(d.svg, 1600);
+    doc.addImage(png, 'PNG', (L - lado) / 2, y, lado, lado);
+    if(comLegenda) legendaCoresPdf(doc, y + lado + 30, d.usados, modo, d.letras);
+  }
+  rodapePaginasPdf(doc);
+  return doc;
+}
+
+function renderPreviaFichaImprimir(){
+  const cont = document.getElementById('fi-previa');
+  const g = fichaImprimirGerada;
+  if(!g){ cont.innerHTML = ''; return; }
+  if(g.tipo === 'ficha'){
+    const nomesTipo = { contar: 'contar', ligar: 'ligar', circular: 'circular', completar: 'completar', tracar: 'traçar', escrever: 'escrever' };
+    cont.innerHTML = `<div class="cartao-grafico" style="margin-top:10px;"><div class="t-grafico">${escaparHtml(g.titulo)}</div>` +
+      `<ol style="margin:8px 0 0;padding-left:20px;font-size:13px;">` +
+      g.exercicios.map(ex => `<li style="margin-bottom:6px;">${escaparHtml(ex.enunciado)} <span style="font-size:11px;color:var(--texto-suave);">(${nomesTipo[ex.tipo] || ex.tipo})</span></li>`).join('') +
+      `</ol></div>`;
+  }else{
+    const comLegenda = g.modo === 'numeros' || g.modo === 'letras';
+    const legenda = (d) => !comLegenda ? '' :
+      `<div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;font-size:11px;">` +
+      PALETA_NUMEROS.filter(c => !d.usados || d.usados.length === 0 || d.usados.includes(c.n)).map(c =>
+        `<span style="display:inline-flex;flex-direction:column;align-items:center;gap:2px;"><span style="display:inline-flex;width:26px;height:26px;border-radius:50%;align-items:center;justify-content:center;font-weight:800;background:rgb(${c.cor.join(',')});color:${c.texto ? '#fff' : '#000'};">${rotuloCor(g.modo, c.n, d.letras)}</span>${c.nome}</span>`).join('') +
+      `</div>`;
+    cont.innerHTML = `<div class="cartao-grafico" style="margin-top:10px;"><div class="t-grafico">${escaparHtml(g.titulo)}</div>` +
+      g.desenhos.map((d, i) => `<div style="margin-top:10px;"><img alt="Pré-visualização do desenho ${i + 1}" style="width:100%;max-width:300px;background:#fff;border:2px solid var(--salva-clara);border-radius:12px;" src="data:image/svg+xml;charset=utf-8,${encodeURIComponent(d.svg)}">${legenda(d)}</div>`).join('') +
+      (comLegenda ? `<div style="font-size:11.5px;color:var(--texto-suave);margin-top:6px;">A legenda de cada desenho vai na folha.</div>` : '') + `</div>`;
+  }
+}
+
+async function gerarFichaImprimirIA(){
+  const btn = document.getElementById('btn-gerar-fi');
+  const msg = document.getElementById('msg-fi');
+  const btnBaixar = document.getElementById('btn-baixar-fi');
+  const tipo = document.getElementById('fi-tipo').value;
+  const tema = limparTextoPdf(document.getElementById('fi-tema').value).slice(0, 80);
+  const fornecedor = document.getElementById('ia-fornecedor').value; // mesmo seletor do gerador de perguntas
+  const usarPerfil = !!document.getElementById('fi-usar-perfil').checked;
+  const perfil = usarPerfil ? obterPerfilParaFichas() : null;
+  let idade = document.getElementById('fi-idade').value;
+  if(idade === 'perfil'){
+    const pf = obterPerfilParaFichas();
+    idade = pf && pf.idade ? String(pf.idade) : '5-6';
+  }
+
+  if(tipo === 'desenho' && !tema && !(perfil && perfil.interesses)){
+    msg.textContent = 'Diz primeiro o que queres que o desenho mostre. Ex: um cão, um carro, uma borboleta.';
+    return;
+  }
+  const chaveGemini = (localStorage.getItem(CHAVE_GEMINI_API) || '').trim();
+  if(fornecedor === 'gemini' && !chaveGemini){
+    msg.textContent = 'Cola primeiro a tua chave da API Gemini, na secção do gerador de perguntas.';
+    return;
+  }
+  fichaImprimirGerada = null;
+  renderPreviaFichaImprimir();
+  btnBaixar.style.display = 'none';
+  msg.textContent = '';
+  if(!verificarLigacaoAntesDeIA(msg)) return;
+  btn.disabled = true;
+  const textoOriginal = btn.textContent;
+  const pedir = (prompt, maxTokens) => (fornecedor === 'gemini')
+    ? gerarDicaComGemini(chaveGemini, prompt, maxTokens)
+    : gerarDicaComClaude(prompt, maxTokens);
+
+  try{
+    if(tipo === 'ficha'){
+      btn.textContent = 'A criar a ficha...';
+      const materia = document.getElementById('fi-materia').value;
+      const quantidade = Math.min(8, Math.max(3, parseInt(document.getElementById('fi-quantidade').value, 10) || 5));
+      const texto = await pedir(construirPromptFicha(materia, tema, idade, quantidade, perfil), 3000);
+      const exercicios = validarFichaGerada(extrairJsonDeTexto(texto));
+      if(exercicios.length === 0) throw new Error('Não foi possível interpretar nenhum exercício válido na resposta.');
+      fichaImprimirGerada = { tipo: 'ficha', titulo: 'Ficha: ' + NOMES_MATERIA_FICHA[materia] + (tema ? ' - ' + tema : ''), exercicios };
+      msg.textContent = `${exercicios.length} exercício(s) criados. Confirma que estão certos antes de imprimir.`;
+    }else{
+      const total = Math.min(3, Math.max(1, parseInt(document.getElementById('fi-qtd-desenhos').value, 10) || 1));
+      const escolhido = document.getElementById('fi-modo-desenho').value;
+      const modo = ['numeros', 'letras', 'pontos', 'livre'].includes(escolhido) ? escolhido : 'numeros';
+      const temaDesenho = tema || limparTextoPdf((perfil && perfil.interesses) || '').split(/[,;.]/)[0].trim() || 'animais';
+      const desenhos = [];
+      const nomes = [];
+      let ultimoErro = null;
+      for(let i = 1; i <= total; i++){
+        btn.textContent = `A desenhar ${i}/${total}...`;
+        // até 2 tentativas por desenho: a IA falha de vez em quando a resposta
+        for(let tentativa = 0; tentativa < 2; tentativa++){
+          try{
+            const d = await criarDesenho({ tema: temaDesenho, idade, numero: i, total, modo, perfil, pedir, anteriores: nomes });
+            desenhos.push(d);
+            nomes.push(d.nome);
+            ultimoErro = null;
+            break;
+          }catch(e){ ultimoErro = e; if(e && e.naoRepetir) break; }
+        }
+        if(ultimoErro && ultimoErro.naoRepetir) break;
+      }
+      if(desenhos.length === 0) throw (ultimoErro || new Error('Não foi possível criar o desenho.'));
+      const prefixo = { numeros: 'Pintar por números: ', letras: 'Pintar pelas letras: ', pontos: 'Ligar os pontos: ', livre: 'Desenho para colorir: ' }[modo];
+      fichaImprimirGerada = { tipo: 'desenho', modo, titulo: prefixo + desenhos[0].nome, desenhos };
+      const doZero = desenhos.some(d => d.doZero);
+      msg.textContent = desenhos.length < total
+        ? `Só consegui criar ${desenhos.length} de ${total} desenhos. Podes descarregar estes ou tentar de novo.`
+        : (doZero
+          ? `Nenhum desenho da biblioteca servia para "${temaDesenho}": a IA desenhou do zero e a qualidade pode ser menor. Vê bem antes de imprimir.`
+          : 'Desenho(s) criado(s). Vê se está tudo bem antes de imprimir — se não gostares, cria de novo.');
+    }
+    renderPreviaFichaImprimir();
+    btnBaixar.style.display = 'block';
+  }catch(erro){
+    msg.textContent = mensagemErroDeRede(erro, fornecedor);
+  }finally{
+    btn.disabled = false;
+    btn.textContent = textoOriginal;
+  }
+}
+
+async function baixarFichaImprimir(){
+  const g = fichaImprimirGerada;
+  if(!g) return;
+  const btn = document.getElementById('btn-baixar-fi');
+  const msg = document.getElementById('msg-fi');
+  const textoOriginal = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = 'A montar o PDF...';
+  try{
+    const doc = (g.tipo === 'ficha') ? await montarPdfFicha(g) : await montarPdfDesenhos(g);
+    const slug = limparTextoPdf(g.titulo).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 40) || 'ficha';
+    doc.save(slug + '.pdf');
+    msg.textContent = 'PDF descarregado. Já podes imprimir.';
+  }catch(erro){
+    registarDiagnostico('pdf', 'Falha ao montar ficha/desenho em PDF: ' + (erro && erro.message));
+    msg.textContent = 'Não foi possível montar o PDF. Confirma a ligação à internet (a biblioteca de PDF é carregada na hora) e tenta de novo.';
+  }finally{
+    btn.disabled = false;
+    btn.textContent = textoOriginal;
+  }
+}
+
+function configurarFichasImprimir(){
+  const tipo = document.getElementById('fi-tipo');
+  const btnGerar = document.getElementById('btn-gerar-fi');
+  const btnBaixar = document.getElementById('btn-baixar-fi');
+  if(!tipo || !btnGerar || !btnBaixar) return;
+  // Idade do perfil como primeira opção (se estiver preenchida); sem perfil, a opção de o usar fica desligada.
+  const perfil = obterPerfilParaFichas();
+  const selIdade = document.getElementById('fi-idade');
+  if(selIdade && perfil && perfil.idade){
+    const op = document.createElement('option');
+    op.value = 'perfil';
+    op.textContent = `Segundo o perfil (${perfil.idade} anos)`;
+    selIdade.insertBefore(op, selIdade.firstChild);
+    selIdade.value = 'perfil';
+  }
+  const chk = document.getElementById('fi-usar-perfil');
+  if(chk && !(perfil && perfil.texto)){
+    chk.checked = false;
+    chk.disabled = true;
+    const d = document.getElementById('fi-perfil-desc');
+    if(d) d.textContent = 'Preenche primeiro o questionário do perfil da criança para a IA o poder usar.';
+  }
+  tipo.addEventListener('change', () => {
+    const desenho = tipo.value === 'desenho';
+    document.getElementById('bloco-fi-ficha').style.display = desenho ? 'none' : '';
+    document.getElementById('bloco-fi-desenho').style.display = desenho ? '' : 'none';
+    document.getElementById('fi-tema-titulo').textContent = desenho ? 'O que desenhar' : 'Tema (opcional)';
+    document.getElementById('fi-tema-desc').textContent = desenho
+      ? 'Uma coisa simples. Ex: um carro de corrida, um dinossauro, um peixe no mar. Se deixares vazio, usa um interesse do perfil.'
+      : 'Um interesse para dar vida aos exercícios. Ex: carros, dinossauros, o mar.';
+    btnGerar.textContent = desenho ? '✨ Criar desenhos' : '✨ Criar ficha';
+  });
+  btnGerar.addEventListener('click', gerarFichaImprimirIA);
+  btnBaixar.addEventListener('click', baixarFichaImprimir);
+}
+
 // ===================== ADICIONAR PALAVRA AO QUADRO CAA (manual, pelos pais) =====================
 // Nenhum vocabulário genérico prevê nomes de pessoas ou objetos específicos do Eduardo —
 // isto dá aos pais um caminho direto para acrescentar essas palavras, sem depender do
@@ -19384,8 +20715,8 @@ function configurarBotaoPlano(){
 
 /* ======================= GESTÃO DE VÍDEOS (acesso escondido, área do responsável técnico) ======================= */
 function abrirGestaoVideosSemPin(){
-  renderGestaoVideos();
-  irPara('gestao-videos');
+  abaConfigAtiva = 'ferramentas';
+  abrirConfigSemPin();
 }
 
 // Mostra, no ecrã de gestão de vídeos, um resumo simples de quantas vezes cada
@@ -19504,7 +20835,7 @@ function executarReset(){
   const apagarVideos = document.getElementById('reset-videos').checked;
   const apagarBancoIA = document.getElementById('reset-banco-ia').checked;
   const apagarChaveGemini = document.getElementById('reset-chave-gemini').checked;
-  const apagarPinConfig = document.getElementById('reset-pin-config').checked;
+  const apagarPinConfig = false;
 
   if(!apagarProgresso && !apagarRotina && !apagarHistorico && !apagarVideos && !apagarBancoIA && !apagarChaveGemini && !apagarPinConfig){
     document.getElementById('msg-reset').textContent = 'Escolhe pelo menos uma opção para apagar.';
@@ -19888,6 +21219,7 @@ configurarBotaoReset();
 configurarBotoesBackup();
 configurarBotaoDicaIA();
 configurarBotoesHistoriaSocial();
+configurarFichasImprimir();
 configurarBotaoPlano();
 carregarCategoriasCaaPersonalizadas();
 carregarFrasesGuardadasCaa();
